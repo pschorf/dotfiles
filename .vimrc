@@ -2,6 +2,8 @@ set t_Co=256
 source ~/.vim/plugin/syntastic.vim
 call pathogen#infect()
 call pathogen#helptags()
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 colorscheme inkpot
 set hidden
 let mapleader = ","
