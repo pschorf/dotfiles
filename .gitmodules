@@ -1,3 +1,6 @@
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
+[submodule ".vim/autoload/tslime.vim"]
+	path = .vim/autoload/tslime.vim
+	url = https://github.com/kikijump/tslime.vim.git
