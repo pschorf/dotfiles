@@ -4,3 +4,6 @@
 [submodule ".vim/autoload/tslime.vim"]
 	path = .vim/autoload/tslime.vim
 	url = https://github.com/kikijump/tslime.vim.git
+[submodule ".vim/bundle/syntastic"]
+	path = .vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
