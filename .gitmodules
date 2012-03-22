@@ -7,3 +7,6 @@
 [submodule ".vim/bundle/syntastic"]
 	path = .vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
+[submodule ".vim/autoload/vim-fugitive"]
+	path = .vim/autoload/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
