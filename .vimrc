@@ -27,3 +27,4 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 let vimclojure#WantNailgun = 1
+set laststatus=2
