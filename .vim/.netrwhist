@@ -1,7 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/Users/pschorf/.oh-my-zsh/plugins/ruby'
-let g:netrw_dirhist_2='/Users/pschorf/code/scala/tutorial/project/plugins'
-let g:netrw_dirhist_3='/Users/pschorf/code/winslow-services/src/main/java'
-let g:netrw_dirhist_4='/Users/pschorf/code/winslow-services/target/scala-2.9.1/src_managed/main/com/searchupc'
-let g:netrw_dirhist_5='/Users/pschorf/code/winslow-services/src/main/scala/noveltyplant/services/upc'
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/paul/src/np/scripts'
+let g:netrw_dirhist_2='/home/paul/src/chef/config'
+let g:netrw_dirhist_3='/home/paul/src/np/core/src/proto/np/core'
+let g:netrw_dirhist_4='/home/paul/src/np/core/src/proto/np/iqfeed'
