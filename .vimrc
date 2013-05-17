@@ -19,14 +19,14 @@ set backspace=indent,eol,start
 filetype plugin indent on
 set hlsearch
 set incsearch
-nnoremap <leader>f :FufFile<CR>
-nnoremap <leader>b :FufBuffer<CR>
-nnoremap <leader>t :FufTaggedFile<CR>
-nnoremap <leader>i :JavaImport<CR>
-nnoremap <leader>s :JavaSearchContext<CR>
 set expandtab
 set shiftwidth=2
 set softtabstop=2
+au BufRead,BufNewFile *.py set shiftwidth=4
+au BufRead,BufNewFile *.py set softtabstop=4
 let vimclojure#WantNailgun = 1
 set laststatus=2
 colorscheme inkpot
+set wildignore+=.git,build,*.class,working
+nnoremap <leader>i :JavaImport<CR>
+nnoremap <leader>s :JavaSearchContext<CR>
