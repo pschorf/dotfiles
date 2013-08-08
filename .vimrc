@@ -27,6 +27,7 @@ au BufRead,BufNewFile *.py set softtabstop=4
 let vimclojure#WantNailgun = 1
 set laststatus=2
 colorscheme inkpot
-set wildignore+=.git,build,*.class,working
+set wildignore+=.git,build,*.class,working,*.pyc
 nnoremap <leader>i :JavaImport<CR>
 nnoremap <leader>s :JavaSearchContext<CR>
+au BufRead,BufNewFile *.py set completefunc=pythoncomplete#Complete
