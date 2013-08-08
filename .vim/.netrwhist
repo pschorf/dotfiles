@@ -1,4 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/home/paul/src/np/src/python/Models'
-let g:netrw_dirhist_2='/home/paul/src/np/rpc/build'
