@@ -31,3 +31,5 @@ set wildignore+=.git,build,*.class,working,*.pyc
 nnoremap <leader>i :JavaImport<CR>
 nnoremap <leader>s :JavaSearchContext<CR>
 au BufRead,BufNewFile *.py set completefunc=pythoncomplete#Complete
+map <leader>f :CtrlP<CR>
+map <leader>b :CtrlPBuffer<CR>
