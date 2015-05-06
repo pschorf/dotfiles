@@ -1,0 +1,19 @@
+(source "elpy" "http://jorgenschaefer.github.io/packages/")
+(source gnu)
+(source marmalade)
+(source melpa)
+
+
+(depends-on "ido-select-window")
+(depends-on "ido-ubiquitous")
+(depends-on "ido-vertical-mode")
+(depends-on "idomenu")
+(depends-on "pallet")
+(depends-on "better-defaults")
+(depends-on "org" "8.2")
+(depends-on "solarized-theme")
+(depends-on "remember")
+(depends-on "monky")
+
+(source org)
+(depends-on "org-plus-contrib")
