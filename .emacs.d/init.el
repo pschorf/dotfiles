@@ -18,6 +18,9 @@
 
 (require 'org-install)
 
+(require 'org-trello)
+(setq org-trello-files '("~/org/haveandhold.org"))
+
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
 (define-key mode-specific-map [?a] 'org-agenda)

@@ -17,3 +17,4 @@
 (depends-on "remember")
 (depends-on "monky")
 (depends-on "org-jira")
+(depends-on "org-trello")
