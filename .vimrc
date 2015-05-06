@@ -26,7 +26,7 @@ au BufRead,BufNewFile *.py set shiftwidth=4
 au BufRead,BufNewFile *.py set softtabstop=4
 let vimclojure#WantNailgun = 1
 set laststatus=2
-colorscheme inkpot
+colorscheme wombat256mod
 set wildignore+=.git,build,*.class,working,*.pyc
 nnoremap <leader>i :JavaImport<CR>
 nnoremap <leader>s :JavaSearchContext<CR>

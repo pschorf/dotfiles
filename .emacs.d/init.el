@@ -7,6 +7,12 @@
 (require 'pallet)
 (load-theme 'solarized-dark t)
 
+(add-hook 'haskell-mode-hook 'haskell-indent-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
 (setq jiralib-url "https://jira.twosigma.com:10101/jira")
 (require 'org-jira)
 
