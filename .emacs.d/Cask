@@ -18,3 +18,5 @@
 (depends-on "monky")
 (depends-on "org-jira")
 (depends-on "org-trello")
+(depends-on "cider")
+(depends-on "magit")

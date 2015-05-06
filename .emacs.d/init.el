@@ -1,11 +1,14 @@
-(setq url-proxy-services
-      '(("http" . "127.0.0.1:3000")
-        ("https" . "127.0.0.1:3000")))
+(if (getenv "http_proxy")
+  (setq url-proxy-services
+        '(("http" . "127.0.0.1:3000")
+          ("https" . "127.0.0.1:3000"))))
 
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
 (load-theme 'solarized-dark t)
+
+(mapc 'load (directory-files "~/.emacs.d/customizations" t "^[0-9]+.*\.el$"))
 
 (add-hook 'haskell-mode-hook 'haskell-indent-mode)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
@@ -89,3 +92,8 @@
 ; '(remember-handler-functions (quote (org-remember-handler))))
 
 (require 'monky)
+
+(setq mac-option-key-is-meta nil
+      mac-command-key-is-meta t
+      mac-command-modifier 'meta
+      mac-option-modifier 'none)
