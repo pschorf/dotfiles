@@ -97,3 +97,5 @@
       mac-command-key-is-meta t
       mac-command-modifier 'meta
       mac-option-modifier 'none)
+
+(setq magit-last-seen-setup-instructions "1.4.0")
