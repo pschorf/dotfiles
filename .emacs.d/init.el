@@ -6,7 +6,7 @@
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
-(load-theme 'solarized-dark t)
+(load-theme 'zenburn t)
 
 (mapc 'load (directory-files "~/.emacs.d/customizations" t "^[0-9]+.*\.el$"))
 
@@ -22,7 +22,7 @@
 (require 'org-install)
 
 (require 'org-trello)
-(setq org-trello-files '("~/org/haveandhold.org"))
+
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
@@ -87,7 +87,8 @@
 	     (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
 ; '(org-remember-store-without-prompt t)
  '(org-capture-templates
-   '(("t" "Todo" entry (file+headline "~/todo.org" "tasks") "** TODO %?\n %u\n"))))
+   '(("t" "Todo" entry (file+headline "~/todo.org" "tasks") "** TODO %?\n %u\n")
+     ("r" "Trello note" entry (file "~/org/paul.trello") "* To-Do %?\n %u\n"))))
 ; '(remember-annotation-functions (quote (org-remember-annotation)))
 ; '(remember-handler-functions (quote (org-remember-handler))))
 
@@ -99,3 +100,11 @@
       mac-option-modifier 'none)
 
 (setq magit-last-seen-setup-instructions "1.4.0")
+
+(add-to-list 'auto-mode-alist '("\\.trello$" . org-mode))
+
+(add-hook 'org-mode-hook
+         (lambda ()
+          (let ((filename (buffer-file-name (current-buffer))))
+              (when (and filename (string= "trello" (file-name-extension filename)))
+               (org-trello-mode)))))

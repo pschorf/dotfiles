@@ -14,6 +14,7 @@
 (depends-on "paredit")
 (depends-on "better-defaults")
 (depends-on "solarized-theme")
+(depends-on "zenburn-theme")
 (depends-on "remember")
 (depends-on "monky")
 (depends-on "org-jira")
