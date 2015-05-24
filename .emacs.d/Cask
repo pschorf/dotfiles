@@ -21,3 +21,6 @@
 (depends-on "org-trello")
 (depends-on "cider")
 (depends-on "magit")
+(depends-on "ghc")
+(depends-on "company-ghc")
+
