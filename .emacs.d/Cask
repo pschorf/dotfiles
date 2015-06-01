@@ -23,4 +23,5 @@
 (depends-on "magit")
 (depends-on "ghc")
 (depends-on "company-ghc")
-
+(depends-on "scala-mode2")
+(depends-on "ensime")

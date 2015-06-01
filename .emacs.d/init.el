@@ -7,9 +7,6 @@
 (cask-initialize)
 (require 'pallet)
 (load-theme 'zenburn t)
-
-(mapc 'load (directory-files "~/.emacs.d/customizations" t "^[0-9]+.*\.el$"))
-
 (add-hook 'haskell-mode-hook 'haskell-indent-mode)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 
@@ -108,3 +105,5 @@
           (let ((filename (buffer-file-name (current-buffer))))
               (when (and filename (string= "trello" (file-name-extension filename)))
                (org-trello-mode)))))
+
+(mapc 'load (directory-files "~/.emacs.d/customizations" t "^[0-9]+.*\.el$"))
