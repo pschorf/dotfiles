@@ -107,3 +107,7 @@
                (org-trello-mode)))))
 
 (mapc 'load (directory-files "~/.emacs.d/customizations" t "^[0-9]+.*\.el$"))
+
+(global-set-key (kbd "M-i") 'imenu)
+
+(require 'helm-config)
