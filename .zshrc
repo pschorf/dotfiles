@@ -37,3 +37,4 @@ source $ZSH/oh-my-zsh.sh
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 export PATH=$PATH:/home/paul/tools/play-2.2.1
 export PATH=/home/paul/.cask/bin:$PATH
+export EDITOR=emacsclient
