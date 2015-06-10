@@ -113,3 +113,5 @@
 (require 'helm-config)
 
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
+
+(require 'ein)

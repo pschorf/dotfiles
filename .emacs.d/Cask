@@ -26,3 +26,4 @@
 (depends-on "scala-mode2")
 (depends-on "ensime")
 (depends-on "helm")
+(depends-on "ein")
