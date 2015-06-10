@@ -111,3 +111,5 @@
 (global-set-key (kbd "M-i") 'imenu)
 
 (require 'helm-config)
+
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
