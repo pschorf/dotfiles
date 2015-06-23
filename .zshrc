@@ -38,3 +38,5 @@ export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 export PATH=$PATH:/home/paul/tools/play-2.2.1
 export PATH=/home/paul/.cask/bin:$PATH
 export EDITOR=emacsclient
+PATH=/home/paul/tools/emacs-24.5/src:$PATH
+export PATH=/home/paul/tools/lein:$PATH

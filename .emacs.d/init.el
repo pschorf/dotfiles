@@ -114,4 +114,5 @@
 
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
-(require 'ein)
+(add-hook 'cider-repl-mode-hook #'company-mode)
+(add-hook 'cider-mode-hook #'company-mode)
