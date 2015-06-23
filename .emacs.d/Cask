@@ -27,3 +27,7 @@
 (depends-on "ensime")
 (depends-on "helm")
 (depends-on "ein")
+(depends-on "emacs-eclim")
+(depends-on "pyvenv")
+(depends-on "projectile")
+(depends-on "helm-projectile")

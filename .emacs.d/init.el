@@ -6,7 +6,7 @@
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
-(load-theme 'zenburn t)
+(load-theme 'wombat t)
 (add-hook 'haskell-mode-hook 'haskell-indent-mode)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 
@@ -109,8 +109,6 @@
 (mapc 'load (directory-files "~/.emacs.d/customizations" t "^[0-9]+.*\.el$"))
 
 (global-set-key (kbd "M-i") 'imenu)
-
-(require 'helm-config)
 
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
