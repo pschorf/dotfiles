@@ -31,3 +31,4 @@
 (depends-on "pyvenv")
 (depends-on "projectile")
 (depends-on "helm-projectile")
+(depends-on "avy")
