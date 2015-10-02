@@ -40,3 +40,4 @@ export PATH=/home/paul/.cask/bin:$PATH
 export EDITOR=emacsclient
 PATH=/home/paul/tools/emacs-24.5/src:$PATH
 export PATH=/home/paul/tools/lein:$PATH
+export PATH=/home/paul/tools/sbt/bin:$PATH
