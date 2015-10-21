@@ -1,9 +1,6 @@
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
-[submodule ".vim/autoload/tslime.vim"]
-	path = .vim/autoload/tslime.vim
-	url = https://github.com/kikijump/tslime.vim.git
 [submodule ".vim/bundle/syntastic"]
 	path = .vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
@@ -16,12 +13,6 @@
 [submodule ".vim/bundle/command-t"]
 	path = .vim/bundle/command-t
 	url = https://github.com/wincent/Command-T.git
-[submodule ".vim/bundle/ctrlp"]
-	path = .vim/bundle/ctrlp
-	url = https://github.com/kien/ctrlp.vim.git
-[submodule ".vim/bundle/vim-fireplace"]
-	path = .vim/bundle/vim-fireplace
-	url = https://github.com/tpope/vim-fireplace.git
 [submodule ".emacs.d"]
 	path = .emacs.d
 	url = https://github.com/syl20bnr/spacemacs
