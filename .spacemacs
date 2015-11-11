@@ -39,6 +39,7 @@ values."
      java
      plantuml
      spotify
+     restclient
 
      )
    ;; List of additional packages that will be installed without being
@@ -221,6 +222,3 @@ layers configuration. You are free to put any user code."
    'org-babel-load-languages
    '((java . t)
      (plantuml . t))))
-
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
