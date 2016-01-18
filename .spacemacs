@@ -37,6 +37,7 @@ values."
      sql
      latex
      restclient
+     spotify
 
      )
    ;; List of additional packages that will be installed without being
