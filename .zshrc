@@ -5,7 +5,7 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -29,15 +29,20 @@ ZSH_THEME="robbyrussell"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(git aws brew emacs osx sbt vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
-export PATH=$PATH:/home/paul/tools/play-2.2.1
-export PATH=/home/paul/.cask/bin:$PATH
-export EDITOR=emacsclient
-PATH=/home/paul/tools/emacs-24.5/src:$PATH
-export PATH=/home/paul/tools/lein:$PATH
-export PATH=/home/paul/tools/sbt/bin:$PATH
+export GRADLE_HOME=/Users/paul/Downloads/gradle-1.7
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11/bin:$GRADLE_HOME/bin
+alias vi=vim
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:/usr/local/bin:$PATH"
+export PATH="$PATH:/Users/paul/tools/lein"
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH=$PATH:/usr/local/texlive/2015/bin/x86_64-darwin
+export PATH=$PATH:/Users/paul/node_modules/typescript/bin
+export PATH=$PATH:/Users/paul/tools/rakudo-2015.12/install/bin
