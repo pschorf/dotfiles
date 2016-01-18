@@ -40,6 +40,8 @@ values."
      plantuml
      spotify
      restclient
+     typescript
+     perl
 
      )
    ;; List of additional packages that will be installed without being
