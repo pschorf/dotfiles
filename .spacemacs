@@ -13,7 +13,7 @@ values."
    dotspacemacs-distribution 'spacemacs
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
+   dotspacemacs-configuration-layer-path '("~/src/spacemacs-layers/")
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
@@ -37,12 +37,13 @@ values."
      sql
      latex
      java
-     plantuml
      spotify
      restclient
      typescript
-     perl
-
+     sql
+     (mu4e :variables
+             mu4e-installation-path "/usr/local/Cellar/mu/0.9.16/share/emacs/site-lisp/mu")
+     org-mu4e
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -86,10 +87,10 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light
+   dotspacemacs-themes '(solarized-dark
                          solarized-light
-                         solarized-dark
+                         spacemacs-dark
+                         spacemacs-light
                          leuven
                          monokai
                          zenburn)
