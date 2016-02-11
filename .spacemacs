@@ -44,6 +44,7 @@ values."
      (mu4e :variables
              mu4e-installation-path "/usr/local/Cellar/mu/0.9.16/share/emacs/site-lisp/mu")
      org-mu4e
+     gnus
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
