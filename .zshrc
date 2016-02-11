@@ -46,3 +46,4 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 export PATH=$PATH:/usr/local/texlive/2015/bin/x86_64-darwin
 export PATH=$PATH:/Users/paul/node_modules/typescript/bin
 export PATH=$PATH:/Users/paul/tools/rakudo-2015.12/install/bin
+export PATH=$PATH:/home/paul/tools/sbt/bin

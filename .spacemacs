@@ -39,8 +39,8 @@ values."
      java
      spotify
      restclient
+     spotify
      typescript
-     sql
      (mu4e :variables
              mu4e-installation-path "/usr/local/Cellar/mu/0.9.16/share/emacs/site-lisp/mu")
      org-mu4e
@@ -99,7 +99,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("Meslo LG M for Powerline"
                                :size 13
                                :weight normal
                                :width normal
