@@ -1,0 +1,20 @@
+IMAPAccount gmail
+Host imap.gmail.com
+User pschorf2@gmail.com
+PassCmd "pass gmail.com/pschorf2"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+AuthMechs login
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/Maildir/
+
+Channel gmail
+Master :gmail-remote:
+Slave :gmail-local:
+Patterns "[Gmail]/Sent Mail" "[Gmail]/Starred" "[Gmail]/All Mail" "INBOX" "[Gmail]/Trash" "[Gmail]/Drafts"
+Create Both
+SyncState *
