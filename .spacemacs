@@ -42,7 +42,7 @@ values."
      spotify
      typescript
      (mu4e :variables
-             mu4e-installation-path "/usr/local/Cellar/mu/0.9.16/share/emacs/site-lisp/mu")
+             mu4e-installation-path "/home/pschorfh/tools/mu-0.9.16/mu4e")
      org-mu4e
      )
    ;; List of additional packages that will be installed without being
