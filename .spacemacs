@@ -44,7 +44,16 @@ values."
      (mu4e :variables
              mu4e-installation-path "/usr/share/emacs/site-lisp/mu4e")
      org-mu4e
-     gnus
+     html
+     emoji
+     javascript
+     shell-scripts
+     erc
+     semantic
+     eyebrowse
+     ranger
+     unimpaired
+     (shell :variables shell-default-shell 'eshell)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
