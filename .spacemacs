@@ -44,6 +44,16 @@ values."
      (mu4e :variables
              mu4e-installation-path "/home/pschorfh/tools/mu-0.9.16/mu4e")
      org-mu4e
+     html
+     emoji
+     javascript
+     shell-scripts
+     erc
+     semantic
+     eyebrowse
+     ranger
+     unimpaired
+     (shell :variables shell-default-shell 'eshell)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
