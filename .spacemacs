@@ -54,6 +54,7 @@ values."
      ranger
      unimpaired
      (shell :variables shell-default-shell 'eshell)
+     yaml
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -217,6 +218,7 @@ user code."
   "Configuration function for user code.
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+  (add-hook 'org-mode-hook 'auto-revert-mode)
   (unless (boundp 'org-latex-classes)
     (setq org-latex-classes nil))
   (add-to-list 'org-latex-classes
@@ -231,6 +233,7 @@ layers configuration. You are free to put any user code."
                  ("\\paragraph{%s}" . "\\paragraph{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph{%s}")))
   (setq org-src-tab-acts-natively t)
+  (setq org-agenda-files '("~/org/outlook.org" "~/todo.org"))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((java . t)
