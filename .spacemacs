@@ -234,4 +234,7 @@ layers configuration. You are free to put any user code."
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((java . t)
-     (plantuml . t))))
+     (plantuml . t)))
+  (with-eval-after-load 'proced
+    (evilified-state-evilify-map proced-mode-map
+      :mode proced-mode)))
