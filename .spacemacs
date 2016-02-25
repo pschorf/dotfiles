@@ -55,12 +55,13 @@ values."
      unimpaired
      (shell :variables shell-default-shell 'eshell)
      yaml
+     csv
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(evalator)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -113,7 +114,7 @@ values."
                                :size 13
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 0.5)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -219,6 +220,7 @@ user code."
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
   (add-hook 'org-mode-hook 'auto-revert-mode)
+  (setq powerline-default-separator nil)
   (unless (boundp 'org-latex-classes)
     (setq org-latex-classes nil))
   (add-to-list 'org-latex-classes
@@ -240,4 +242,9 @@ layers configuration. You are free to put any user code."
      (plantuml . t)))
   (with-eval-after-load 'proced
     (evilified-state-evilify-map proced-mode-map
-      :mode proced-mode)))
+      :mode proced-mode))
+  (add-to-list 'org-capture-templates '("j" "Journal" entry
+                                        (file+datetree "~/org/journal.org")
+                                        "* %?\nEntered on %U\n %i\n %k"))
+  (setq org-refile-targets '((nil :maxlevel . 1)
+                             ("til.org" :maxlevel . 1))))
