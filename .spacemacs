@@ -55,7 +55,7 @@ values."
      unimpaired
      (shell :variables shell-default-shell 'eshell)
      yaml
-     csv
+;     csv
      fasd
      )
    ;; List of additional packages that will be installed without being
@@ -249,4 +249,13 @@ layers configuration. You are free to put any user code."
                                         (file+datetree "~/org/journal.org")
                                         "* %?\nEntered on %U\n %i\n %k"))
   (setq org-refile-targets '((nil :maxlevel . 1)
-                             ("til.org" :maxlevel . 1))))
+                             ("til.org" :maxlevel . 1)))
+  (defun org-capture-link ()
+    "Capture with a link"
+    (interactive)
+    (org-store-link (buffer-file-name))
+    (org-capture nil "t")
+    (let ((link (plist-get org-store-link-plist ':annotation)))
+      (save-excursion
+        (newline)
+        (insert link)))))

@@ -33,10 +33,9 @@ plugins=(git aws brew emacs osx sbt vi-mode fasd)
 
 
 source $ZSH/oh-my-zsh.sh
+source $HOME/.profile
 
 # Customize to your needs...
-export GRADLE_HOME=/Users/paul/Downloads/gradle-1.7
-export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11/bin:$GRADLE_HOME/bin
 alias vi=vim
 
 ### Added by the Heroku Toolbelt
