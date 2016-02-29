@@ -57,8 +57,9 @@ values."
      unimpaired
      (shell :variables shell-default-shell 'eshell)
      yaml
-     csv
+;     csv
      fasd
+     org-page
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -253,4 +254,13 @@ layers configuration. You are free to put any user code."
   (setq org-refile-targets '((nil :maxlevel . 1)
                              ("til.org" :maxlevel . 1)))
 
-  (set-time-zone-rule "America/Chicago"))
+  (set-time-zone-rule "America/Chicago")
+  (defun org-capture-link ()
+    "Capture with a link"
+    (interactive)
+    (org-store-link (buffer-file-name))
+    (org-capture nil "t")
+    (let ((link (plist-get org-store-link-plist ':annotation)))
+      (save-excursion
+        (newline)
+        (insert link)))))
