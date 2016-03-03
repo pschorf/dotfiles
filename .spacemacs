@@ -57,7 +57,7 @@ values."
      unimpaired
      (shell :variables shell-default-shell 'eshell)
      yaml
-;     csv
+     csv
      fasd
      org-page
      )
@@ -255,6 +255,8 @@ layers configuration. You are free to put any user code."
                              ("til.org" :maxlevel . 1)))
 
   (set-time-zone-rule "America/Chicago")
+  (load-file "~/src/org/org-scrum.el")
+
   (defun org-capture-link ()
     "Capture with a link"
     (interactive)
