@@ -27,8 +27,10 @@ values."
      c-c++
      git
      org
-     spell-checking
-     syntax-checking
+     (spell-checking
+      :variables spell-checking-enable-by-default nil)
+     (syntax-checking
+      :variables syntax-checking-enable-by-default nil)
      version-control
      scala
      clojure
@@ -251,6 +253,8 @@ layers configuration. You are free to put any user code."
                                         "* %?\nEntered on %U\n %i\n %k"))
   (setq org-refile-targets '((nil :maxlevel . 1)
                              ("til.org" :maxlevel . 1)))
+
+  (set-time-zone-rule "America/Chicago")
   (defun org-capture-link ()
     "Capture with a link"
     (interactive)
