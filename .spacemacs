@@ -244,7 +244,8 @@ layers configuration. You are free to put any user code."
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((java . t)
-     (plantuml . t)))
+     (plantuml . t)
+     (sql . t)))
   (with-eval-after-load 'proced
     (evilified-state-evilify-map proced-mode-map
       :mode proced-mode))
@@ -256,16 +257,11 @@ layers configuration. You are free to put any user code."
 
   (set-time-zone-rule "America/Chicago")
   (load-file "~/src/org/org-scrum.el")
-
-  (defun org-capture-link ()
-    "Capture with a link"
-    (interactive)
-    (org-store-link (buffer-file-name))
-    (org-capture nil "t")
-    (let ((link (plist-get org-store-link-plist ':annotation)))
-      (save-excursion
-        (newline)
-        (insert link))))
+  (load-file "~/src/org/ob-sql.el")
+  (defun my-org-confirm-babel-evaluate (lang body)
+    (not (string= lang "tsql")))  ; don't ask for tsql
+  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  
   (use-package link-hint
     :ensure t
     :defer t)
