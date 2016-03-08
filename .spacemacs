@@ -267,4 +267,5 @@ layers configuration. You are free to put any user code."
     :ensure t
     :defer t)
   (evil-leader/set-key "x o" 'link-hint-open-link)
+  (add-hook 'eshell-mode-hook 'with-editor-export-editor)
   (setq erc-hide-list '("JOIN" "PART" "QUIT")))
