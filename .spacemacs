@@ -57,7 +57,7 @@ values."
      unimpaired
      (shell :variables shell-default-shell 'eshell)
      yaml
-;     csv
+     csv
      fasd
      org-page
      )
@@ -246,7 +246,8 @@ layers configuration. You are free to put any user code."
    'org-babel-load-languages
    '((java . t)
      (plantuml . t)
-     (sh . t)))
+     (sh . t)
+     (sql . t)))
   (with-eval-after-load 'proced
     (evilified-state-evilify-map proced-mode-map
       :mode proced-mode))
@@ -257,15 +258,12 @@ layers configuration. You are free to put any user code."
                              ("til.org" :maxlevel . 1)))
 
   (set-time-zone-rule "America/Chicago")
-  (defun org-capture-link ()
-    "Capture with a link"
-    (interactive)
-    (org-store-link (buffer-file-name))
-    (org-capture nil "t")
-    (let ((link (plist-get org-store-link-plist ':annotation)))
-      (save-excursion
-        (newline)
-        (insert link))))
+  (load-file "~/src/org/org-scrum.el")
+  (load-file "~/src/org/ob-sql.el")
+  (defun my-org-confirm-babel-evaluate (lang body)
+    (not (string= lang "tsql")))  ; don't ask for tsql
+  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  
   (use-package link-hint
     :ensure t
     :defer t)
@@ -273,4 +271,5 @@ layers configuration. You are free to put any user code."
   (setq erc-hide-list '("JOIN" "PART" "QUIT")
         erc-default-port 4321
         erc-default-server "bastion.beauxed.com"
-        erc-prompt-for-password nil))
+        erc-prompt-for-password nil)
+  (add-hook 'eshell-mode-hook 'with-editor-export-editor))
