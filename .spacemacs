@@ -245,7 +245,8 @@ layers configuration. You are free to put any user code."
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((java . t)
-     (plantuml . t)))
+     (plantuml . t)
+     (sh . t)))
   (with-eval-after-load 'proced
     (evilified-state-evilify-map proced-mode-map
       :mode proced-mode))
@@ -269,4 +270,7 @@ layers configuration. You are free to put any user code."
     :ensure t
     :defer t)
   (evil-leader/set-key "x o" 'link-hint-open-link)
-  (setq erc-hide-list '("JOIN" "PART" "QUIT")))
+  (setq erc-hide-list '("JOIN" "PART" "QUIT")
+        erc-default-port 4321
+        erc-default-server "bastion.beauxed.com"
+        erc-prompt-for-password nil))
