@@ -349,7 +349,7 @@ layers configuration. You are free to put any user code."
                  ("\\paragraph{%s}" . "\\paragraph{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph{%s}")))
   (setq org-src-tab-acts-natively t)
-  (setq org-agenda-files '("~/org/outlook.org" "~/todo.org"))
+  (setq org-agenda-files '("~/todo.org"))
   (setq ranger-override-dired t)
   (org-babel-do-load-languages
    'org-babel-load-languages
