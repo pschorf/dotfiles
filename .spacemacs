@@ -27,7 +27,7 @@ values."
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '("~/src/spacemacs-layers/")
+   dotspacemacs-configuration-layer-path nil
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
@@ -60,21 +60,17 @@ values."
      typescript
      (mu4e :variables
              mu4e-installation-path "/home/pschorfh/tools/mu-0.9.16/mu4e")
-     org-mu4e
      html
      emoji
      javascript
      shell-scripts
      erc
      semantic
-     eyebrowse
      ranger
-     unimpaired
      (shell :variables shell-default-shell 'eshell)
      yaml
      csv
      fasd
-     org-page
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -367,7 +363,10 @@ layers configuration. You are free to put any user code."
   (with-eval-after-load 'org-capture
     (add-to-list 'org-capture-templates '("j" "Journal" entry
                                           (file+datetree "~/org/journal.org")
-                                          "* %?\nEntered on %U\n %i\n %k")))
+                                          "* %?\nEntered on %U\n %i\n %k"))
+    (add-to-list 'org-capture-templates '("t" "todo" entry (file+headline "~/todo.org" "Tasks")
+                                          "* TODO %?
+SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
   (setq org-refile-targets '((nil :maxlevel . 1)
                              ("til.org" :maxlevel . 1)))
 
@@ -383,17 +382,3 @@ layers configuration. You are free to put any user code."
         erc-default-server "bastion.beauxed.com"
         erc-prompt-for-password nil)
   (add-hook 'eshell-mode-hook 'with-editor-export-editor))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (mmm-mode markdown-toc markdown-mode gh-md yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tide tagedit stickyfunc-enhance srefactor sql-indent spotify spaceline smeargle slim-mode shell-pop scss-mode sass-mode restclient-helm restart-emacs ranger rainbow-delimiters pug-mode popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-restclient ob-http noflet neotree multi-term mu4e-maildirs-extension mu4e-alert move-text magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc insert-shebang info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-spotify helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fish-mode fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks ensime emoji-cheat-sheet-plus emmet-mode elisp-slime-nav dumb-jump disaster diff-hl define-word csv-mode company-web company-tern company-statistics company-shell company-restclient company-emoji company-emacs-eclim company-c-headers company-auctex column-enforce-mode coffee-mode cmake-mode clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
