@@ -622,12 +622,13 @@ before packages are loaded."
         '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d@/!)")
           (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
   (setq org-tag-alist (quote (("@errand" . ?e)
-                              ("@work" . ?o)
+                              ("@work" . ?w)
                               ("@home" . ?h)
+                              ("@cali" . ?c)
                               (:newline)
-                              ("WAITING" . ?w)
+                              ("WAITING" . ?W)
                               ("HOLD" . ?H)
-                              ("CANCELLED" . ?c))))
+                              ("CANCELLED" . ?C))))
 
   (defun pschorf/process-inbox-item ()
     "Process an inbox item"
