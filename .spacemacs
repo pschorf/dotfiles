@@ -706,15 +706,32 @@ before packages are loaded."
         (pschorf/set-org-jira-ticket id))
       (org-priority)))
 
+  (defun pschorf/org-jira-count (key)
+    (setq jira-count 0)
+    (let ((buffer (current-buffer)))
+      (set-buffer (find-file "~/org/gtd/projects.org"))
+      (setq jira-count (length (org-map-entries t (concat "JIRA=\"" key "\"") 'file-with-archives)))
+      (set-buffer buffer))
+    jira-count)
+
   (defun pschorf/create-org-jira-entry (id)
     (interactive "sJIRA:")
     (with-current-buffer (find-file "~/org/gtd/projects.org")
-      (message "%s" (org-map-entries (lambda () (pschorf/create-org-helper id)) "ITEM=\"JIRAs\"" 'file))))
+      (if (= 0 (pschorf/org-jira-count id))
+        (org-map-entries (lambda () (pschorf/create-org-helper id)) "ITEM=\"JIRAs\"" 'file))))
+
+  (defun pschorf/create-all-open-jiras ()
+    (interactive)
+    (let* ((keys-string (shell-command-to-string "jira ls -t key -q \"assignee = 60b03cdbcbc3aa0068e6b233 AND resolution is EMPTY\""))
+           (keys (split-string keys-string)))
+      (dolist (key keys)
+        (pschorf/create-org-jira-entry key))))
 
   (spacemacs/declare-prefix-for-mode 'org-mode "mmp" "pschorf")
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "mps" 'pschorf/set-org-jira-ticket)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "mpo" 'pschorf/open-jira-ticket-from)
   (spacemacs/set-leader-keys "aoj" 'pschorf/create-org-jira-entry)
+  (spacemacs/set-leader-keys "aoJ" 'pschorf/create-all-open-jiras)
 
   (setq browse-url-browser-function 'eww-browse-url)
 
