@@ -32,8 +32,10 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '((python :variables
+   '(yaml
+     (python :variables
              python-backend 'lsp
+             python-lsp-server 'pyright
              python-pipenv-activate t)
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -48,7 +50,11 @@ This function should only modify configuration layer settings."
      lsp
      ;; markdown
      multiple-cursors
-     org
+     (org :variables
+          org-directory "~/org"
+          org-enable-roam-support t
+          org-roam-directory "~/org/notes"
+          org-roam-index-file "~/org/notes/index.org")
      git
      (shell :variables
             shell-default-height 30
@@ -56,7 +62,8 @@ This function should only modify configuration layer settings."
      ;; spell-checking
      ;; syntax-checking
      ;; version-control
-     treemacs)
+     treemacs
+     elfeed)
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -67,7 +74,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(gnu-apl-mode)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -565,9 +572,10 @@ before packages are loaded."
                                       ,(concat pschorf/org-agenda-directory "projects.org")
                                       ,(concat pschorf/org-agenda-directory "next.org")))
                   ))
-           (todo "TODO"
+           (todo "TODO|WAITING"
                  ((org-agenda-overriding-header "Projects")
                   (org-agenda-files '(,(concat pschorf/org-agenda-directory "projects.org")))
+                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))
                   ))
            (todo "TODO"
                  ((org-agenda-overriding-header "One-off Tasks")
@@ -625,6 +633,8 @@ before packages are loaded."
                               ("@work" . ?w)
                               ("@home" . ?h)
                               ("@cali" . ?c)
+                              ("@support" . ?s)
+                              ("@jira" . ?j)
                               (:newline)
                               ("WAITING" . ?W)
                               ("HOLD" . ?H)
@@ -657,13 +667,59 @@ before packages are loaded."
           ("c" "org-protocol-capture" entry (file ,(concat pschorf/org-agenda-directory "inbox.org"))
            "* TODO [[%:link][%:description]]\n\n" :immediate-finish t)
           ("t" "Todo" entry (file+headline "~/todo.org" "Tasks")
-           "* TODO %?\n SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n %a")))
+           "* TODO %?\n SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n %a")
+          ("m" "Meeting Notes" entry (file+olp+datetree ,(concat org-directory "/meeting_notes.org"))
+           "* %?")))
   (defun pschorf/switch-to-agenda ()
     (interactive)
     (org-agenda nil " "))
   (bind-key "<f1>" 'pschorf/switch-to-agenda)
 
-  (spacemacs/toggle-mode-line-org-clock-on))
+  (spacemacs/toggle-mode-line-org-clock-on)
+
+  (setq jiralib-url "https://robinhood.atlassian.net")
+
+  (defun pschorf/open-jira-ticket-from ()
+    (interactive)
+    (let ((jira (org-entry-get (point) "JIRA")))
+      (if jira
+          (let ((jira-url (concat jiralib-url "/browse/" jira)))
+            (browse-url-default-macosx-browser jira-url))
+        (message "No JIRA property!"))))
+
+  (defun pschorf/set-org-jira-ticket (id)
+    (interactive "sJIRA:")
+    (let* ((tags (org-get-tags))
+           (tags-with-jira (or (member "@jira" tags)
+                               (cons "@jira" tags))))
+      (org-set-tags tags-with-jira))
+    (org-entry-put (point) "JIRA" id))
+
+  (defun pschorf/create-org-helper (id)
+    (let* ((jira-summary (shell-command-to-string (concat "jira view -t summary " id))))
+      (org-insert-heading-after-current)
+      (save-excursion
+        (insert jira-summary)
+        (org-demote)
+        (org-todo "TODO"))
+      (save-excursion
+        (pschorf/set-org-jira-ticket id))
+      (org-priority)))
+
+  (defun pschorf/create-org-jira-entry (id)
+    (interactive "sJIRA:")
+    (with-current-buffer (find-file "~/org/gtd/projects.org")
+      (message "%s" (org-map-entries (lambda () (pschorf/create-org-helper id)) "ITEM=\"JIRAs\"" 'file))))
+
+  (spacemacs/declare-prefix-for-mode 'org-mode "mmp" "pschorf")
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "mps" 'pschorf/set-org-jira-ticket)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "mpo" 'pschorf/open-jira-ticket-from)
+  (spacemacs/set-leader-keys "aoj" 'pschorf/create-org-jira-entry)
+
+  (setq browse-url-browser-function 'eww-browse-url)
+
+
+  (setq lsp-enable-file-watchers nil))
 
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -678,9 +734,11 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(elfeed-feeds
+   '("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss"))
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
-   '(lsp-ui lsp-origami origami helm-lsp flycheck-pos-tip pos-tip zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme modus-themes minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme eziam-theme exotica-theme espresso-theme dracula-theme doom-themes django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme chocolate-theme autothemer cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme yasnippet-snippets helm-company helm-c-yasnippet fuzzy company-emoji auto-yasnippet yasnippet ac-ispell auto-complete yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic xterm-color vterm terminal-here slack circe oauth2 websocket shell-pop multi-term eshell-z eshell-prompt-extras esh-help emojify emoji-cheat-sheet-plus treemacs-magit smeargle orgit-forge orgit org-rich-yank org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-contrib org org-cliplink org-brain htmlize helm-org-rifle helm-gitignore helm-git-grep gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link forge markdown-mode magit ghub closql emacsql-sqlite emacsql treepy magit-section git-commit with-editor transient evil-org ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line)))
+   '(yaml-mode elfeed-org elfeed-goodies ace-jump-mode noflet elfeed ox-jira org-roam emacsql-sqlite3 gnu-apl-mode org-jira zenburn-theme zen-and-art-theme yasnippet-snippets yapfify xterm-color ws-butler writeroom-mode winum white-sand-theme which-key vterm volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toxi-theme toc-org terminal-here tao-theme tangotango-theme tango-plus-theme tango-2-theme symon symbol-overlay sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection string-edit sphinx-doc spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle shell-pop seti-theme reverse-theme restart-emacs rebecca-theme rainbow-delimiters railscasts-theme quickrun pytest pyenv-mode py-isort purple-haze-theme professional-theme popwin poetry planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme pcre2el password-generator paradox overseer orgit-forge organic-green-theme org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme nose noctilux-theme naquadah-theme nameless mustang-theme multi-term multi-line monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme minimal-theme material-theme majapahit-theme madhat2r-theme macrostep lush-theme lsp-ui lsp-python-ms lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic hybrid-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gandalf-theme fuzzy font-lock+ flycheck-pos-tip flycheck-package flycheck-elsa flx-ido flatui-theme flatland-theme farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emr elisp-slime-nav editorconfig dumb-jump drag-stuff dracula-theme dotenv-mode doom-themes django-theme dired-quick-sort diminish define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dap-mode dakrone-theme cython-mode cyberpunk-theme company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme clean-aindent-mode chocolate-theme cherry-blossom-theme centered-cursor-mode busybee-theme bubbleberry-theme blacken birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-link ace-jump-helm-line ac-ispell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
