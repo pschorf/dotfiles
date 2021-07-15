@@ -727,10 +727,50 @@ before packages are loaded."
       (dolist (key keys)
         (pschorf/create-org-jira-entry key))))
 
+
+  (defvar jira-mode-map (make-sparse-keymap))
+
+  (define-derived-mode jira-mode
+    special-mode "JIRA"
+    "Jira issue details"
+    (use-local-map jira-mode-map)
+    (evil-define-key 'normal jira-mode-map
+      "q" 'kill-buffer-and-window)
+    (evil-define-key 'normal jira-mode-map
+      "t" 'pschorf/jira-transition))
+
+  (defun pschorf/jira-transition ()
+    (interactive)
+    (let* ((transitions-string (shell-command-to-string (concat "jira transitions " issuekey)))
+           (transition-lines (seq-filter (lambda (s) (not (string= s ""))) (split-string transitions-string "\n")))
+           (choices (mapcar (lambda (s)
+                              (let ((pair (split-string s ":")))
+                                (list (string-trim (cadr pair))
+                                      (string-to-number (string-trim (car pair))))))
+                            transition-lines))
+           (choice (completing-read "Transition" choices)))
+      (shell-command (concat "jira transition --noedit \"" choice "\" " issuekey))
+      (pschorf/draw-jira-details-buffer)))
+
+  (defun pschorf/draw-jira-details-buffer ()
+    (let ((buffer-read-only nil)
+          (jira-details (shell-command-to-string (concat "jira view " issuekey))))
+      (erase-buffer)
+      (insert jira-details)))
+
+  (defun pschorf/jira-details ()
+    (interactive)
+    (setq issuekey (org-entry-get (point) "JIRA"))
+      (split-window-below-and-focus)
+      (switch-to-buffer (get-buffer-create "*JIRA Issue Details*"))
+      (make-local-variable 'issuekey)
+      (pschorf/draw-jira-details-buffer)
+      (jira-mode))
+
   (spacemacs/declare-prefix-for-mode 'org-mode "mmp" "pschorf")
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "mps" 'pschorf/set-org-jira-ticket)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "mpo" 'pschorf/open-jira-ticket-from)
-  (spacemacs/set-leader-keys "aoj" 'pschorf/create-org-jira-entry)
+  (spacemacs/set-leader-keys "aoj" 'pschorf/jira-details)
   (spacemacs/set-leader-keys "aoJ" 'pschorf/create-all-open-jiras)
 
   (setq browse-url-browser-function 'eww-browse-url)
@@ -752,10 +792,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(elfeed-feeds
-   '("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss"))
- '(evil-want-Y-yank-to-eol nil)
- '(package-selected-packages
-   '(yaml-mode elfeed-org elfeed-goodies ace-jump-mode noflet elfeed ox-jira org-roam emacsql-sqlite3 gnu-apl-mode org-jira zenburn-theme zen-and-art-theme yasnippet-snippets yapfify xterm-color ws-butler writeroom-mode winum white-sand-theme which-key vterm volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toxi-theme toc-org terminal-here tao-theme tangotango-theme tango-plus-theme tango-2-theme symon symbol-overlay sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection string-edit sphinx-doc spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle shell-pop seti-theme reverse-theme restart-emacs rebecca-theme rainbow-delimiters railscasts-theme quickrun pytest pyenv-mode py-isort purple-haze-theme professional-theme popwin poetry planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme pcre2el password-generator paradox overseer orgit-forge organic-green-theme org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme nose noctilux-theme naquadah-theme nameless mustang-theme multi-term multi-line monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme minimal-theme material-theme majapahit-theme madhat2r-theme macrostep lush-theme lsp-ui lsp-python-ms lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic hybrid-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gandalf-theme fuzzy font-lock+ flycheck-pos-tip flycheck-package flycheck-elsa flx-ido flatui-theme flatland-theme farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emr elisp-slime-nav editorconfig dumb-jump drag-stuff dracula-theme dotenv-mode doom-themes django-theme dired-quick-sort diminish define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dap-mode dakrone-theme cython-mode cyberpunk-theme company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme clean-aindent-mode chocolate-theme cherry-blossom-theme centered-cursor-mode busybee-theme bubbleberry-theme blacken birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-link ace-jump-helm-line ac-ispell)))
+   '("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
