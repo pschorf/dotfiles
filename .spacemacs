@@ -773,7 +773,7 @@ before packages are loaded."
   (spacemacs/set-leader-keys "aoj" 'pschorf/jira-details)
   (spacemacs/set-leader-keys "aoJ" 'pschorf/create-all-open-jiras)
 
-  (setq browse-url-browser-function 'eww-browse-url)
+  (setq browse-url-browser-function 'browse-url-default-browser)
 
 
   (setq lsp-enable-file-watchers nil))
