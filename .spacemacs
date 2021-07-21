@@ -33,6 +33,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(yaml
+     mu4e
      (python :variables
              python-backend 'lsp
              python-lsp-server 'pyright
@@ -775,6 +776,7 @@ before packages are loaded."
 
   (setq browse-url-browser-function 'browse-url-default-browser)
 
+  (setq epa-pinentry-mode 'loopback)
 
   (setq lsp-enable-file-watchers nil)
   (use-package org-roam
@@ -790,7 +792,39 @@ before packages are loaded."
            ("C-c n j" . org-roam-dailies-capture-today))
     :config
     (org-roam-setup))
-  (setq org-roam-v2-ack t))
+  (setq org-roam-v2-ack t)
+  (when (require 'mu4e nil 'noerror)
+
+    (setq mu4e-maildir (expand-file-name "~/Maildir"))
+    (setq mu4e-drafts-folder "/[Gmail].Drafts")
+    (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
+    (setq mu4e-trash-folder  "/[Gmail].Trash")
+
+    ;; don't save message to Sent Messages, GMail/IMAP will take care of this
+    (setq mu4e-sent-messages-behavior 'delete)
+
+    ;; setup some handy shortcuts
+    (setq mu4e-maildir-shortcuts
+          '(("/INBOX"             . ?i)
+            ("/[Gmail].Sent Mail" . ?s)
+            ("/[Gmail].Trash"     . ?t)))
+
+    ;; allow for updating mail using 'U' in the main view:
+    (setq mu4e-get-mail-command "offlineimap")
+    (require 'smtpmail)
+    (setq user-mail-address "pschorf2@gmail.com"
+          user-full-name "Paul Schorfheide")
+
+    (setq message-send-mail-function 'smtpmail-send-it
+          starttls-use-gnutls t
+          smtpmail-starttls-credentials
+          '(("smtp.gmail.com" 587 nil nil))
+          smtpmail-auth-credentials
+          (expand-file-name "~/.authinfo.gpg")
+          smtpmail-default-smtp-server "smtp.gmail.com"
+          smtpmail-smtp-server "smtp.gmail.com"
+          smtpmail-smtp-service 587
+          smtpmail-debug-info t)))
 
 
 ;; Do not write anything past this comment. This is where Emacs will
