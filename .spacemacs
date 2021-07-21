@@ -33,6 +33,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(yaml
+     haskell
      (python :variables
              python-backend 'lsp
              python-lsp-server 'pyright
