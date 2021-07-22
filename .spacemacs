@@ -794,6 +794,7 @@ before packages are loaded."
            ("C-c n i" . org-roam-node-insert)
            ("C-c n c" . org-roam-capture)
            ("C-c n t" . org-roam-dailies-goto-today)
+           ("C-c n a" . org-roam-tag-add)
            ;; Dailies
            ("C-c n j" . org-roam-dailies-capture-today))
     :config
