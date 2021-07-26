@@ -79,7 +79,9 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(gnu-apl-mode
-                                      keychain-environment)
+                                      keychain-environment
+                                      key-chord
+                                      jump-char)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -804,8 +806,18 @@ before packages are loaded."
            ("C-c n j" . org-roam-dailies-capture-today))
     :config
     (org-roam-setup))
+  (define-key org-mode-map (kbd "C-c C-w") 'org-refile)
   (keychain-refresh-environment)
   (setq ledger-post-amount-alignment-at :decimal)
+
+  (global-set-key (kbd "M-i") 'imenu)
+
+  ;; key chord
+  (require 'key-chord)
+  (key-chord-mode 1)
+  (key-chord-define-global "fg" 'jump-char-forward)
+  (key-chord-define-global "fl" 'avy-goto-line)
+
   (when (require 'mu4e nil 'noerror)
 
     (setq mu4e-maildir (expand-file-name "~/Maildir"))
