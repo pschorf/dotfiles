@@ -689,6 +689,8 @@ before packages are loaded."
 
   (setq jiralib-url "https://robinhood.atlassian.net")
 
+  (bind-key (kbd "C-x g") 'magit-status)
+
   (defun pschorf/open-jira-ticket-from ()
     (interactive)
     (let ((jira (org-entry-get (point) "JIRA")))
