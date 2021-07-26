@@ -809,24 +809,31 @@ before packages are loaded."
   (when (require 'mu4e nil 'noerror)
 
     (setq mu4e-maildir (expand-file-name "~/Maildir"))
-    (setq mu4e-drafts-folder "/[Gmail].Drafts")
-    (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
-    (setq mu4e-trash-folder  "/[Gmail].Trash")
+    (setq mu4e-contexts
+          `( ,(make-mu4e-context
+               :name "Gmail"
+               :vars '((mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
+                       (mu4e-sent-folder . "/Gmail/[Gmail].Sent Mail")
+                       (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
+                       (mu4e-sent-messages-behavior . 'delete)
+                       (mu4e-maildir-shortcuts . (("/Gmail/INBOX" . ?i)
+                                                   ("/Gmail/[Gmail].Sent Mail" . ?s)
+                                                   ("/Gmail/[Gmail].Trash" . ?t)))
+                       (user-mail-address . "pschorf2@gmail.com")))
 
-    ;; don't save message to Sent Messages, GMail/IMAP will take care of this
-    (setq mu4e-sent-messages-behavior 'delete)
+              ,(make-mu4e-context
+               :name "Schorfheide"
+               :vars '((mu4e-drafts-folder . "/Schorfheide/Drafts")
+                       (mu4e-sent-folder . "/Schorfheide/Sent")
+                       (mu4e-trash-folder . "/Schorfheide/Trash")
+                       (mu4e-maildir-shortcuts . (("/Schorfheide/INBOX" . ?i)
+                                                   ("/Schorfheide/Sent" . ?s)
+                                                   ("/Schorfheide/Trash" . ?s)))
+                       (user-mail-address . "paul@schorfheide.org")))))
 
-    ;; setup some handy shortcuts
-    (setq mu4e-maildir-shortcuts
-          '(("/INBOX"             . ?i)
-            ("/[Gmail].Sent Mail" . ?s)
-            ("/[Gmail].Trash"     . ?t)))
-
-    ;; allow for updating mail using 'U' in the main view:
     (setq mu4e-get-mail-command "offlineimap")
     (require 'smtpmail)
-    (setq user-mail-address "pschorf2@gmail.com"
-          user-full-name "Paul Schorfheide")
+    (setq user-full-name "Paul Schorfheide")
 
     (setq message-send-mail-function 'smtpmail-send-it
           starttls-use-gnutls t
