@@ -3,3 +3,8 @@ custom.el
 straight
 transient
 elpa
+\#*\#
+.lsp*
+local.el
+bookmarks
+projectile-bookmarks.eld
