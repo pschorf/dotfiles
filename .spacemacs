@@ -82,7 +82,8 @@ This function should only modify configuration layer settings."
                                       keychain-environment
                                       key-chord
                                       jump-char
-                                      pdf-tools)
+                                      pdf-tools
+                                      literate-calc-mode)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -795,6 +796,8 @@ before packages are loaded."
   (spacemacs/set-leader-keys "aoJ" 'pschorf/create-all-open-jiras)
 
   (setq browse-url-browser-function 'browse-url-default-browser)
+
+  (define-key calc-dispatch-map "l" 'literate-calc-minor-mode)
 
   (setq epa-pinentry-mode 'loopback)
 
