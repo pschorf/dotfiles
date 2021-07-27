@@ -1,4 +1,5 @@
 (use-package elfeed
+  :ensure t
   :init
   (setq elfeed-feeds '("https://www.reddit.com/r/emacs/.rss" "https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" "https://www.reddit.com/r/apachespark/.rss" "https://www.reddit.com/r/haskell/.rss"))
   :commands elfeed)

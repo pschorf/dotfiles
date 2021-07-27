@@ -6,8 +6,10 @@
   :config
   (setq lsp-enable-file-watchers nil))
 
-(use-package yaml-mode)
+(use-package yaml-mode
+  :ensure t)
 
 (use-package ansible
+  :ensure t
   :hook (yaml-mode . (lambda ()
 		       (ansible 1))))

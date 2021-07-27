@@ -23,7 +23,11 @@
   (load bootstrap-file nil 'nomessage))
 
 
-; use-package
+					; use-package
+(unless (require 'use-package nil 'noerror)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 (require 'use-package)
 
 ; custom file

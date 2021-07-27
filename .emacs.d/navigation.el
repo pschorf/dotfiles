@@ -1,5 +1,5 @@
 (use-package winum
-  :defer nil
+  :ensure t
   :bind (("s-1" . 'winum-select-window-1)
 	 ("s-2" . 'winum-select-window-2)
 	 ("s-3" . 'winum-select-window-3)
@@ -15,3 +15,8 @@
 	 ("C-x C-f" . 'helm-find-files))
   :config
   (helm-mode 1))
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))

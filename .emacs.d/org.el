@@ -4,6 +4,9 @@
 
 (setq org-directory "~/org")
 
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c c") 'org-capture)
+
 
 (setq pschorf/org-agenda-directory "~/org/gtd/")
 (setq pschorf/org-agenda-todo-view
@@ -125,21 +128,25 @@
  (org-agenda nil " "))
 (bind-key "<f1>" 'pschorf/switch-to-agenda)
 
-  (use-package org-roam
-    :ensure t
-    :after org
-    :custom
-    (org-roam-directory (file-truename "~/org/notes/"))
-    (org-roam-db-location (concat org-roam-directory "org-roam.db"))
-    :bind (("C-c n l" . org-roam-buffer-toggle)
-           ("C-c n f" . org-roam-node-find)
-           ("C-c n g" . org-roam-graph)
-           ("C-c n i" . org-roam-node-insert)
-           ("C-c n c" . org-roam-capture)
-           ("C-c n t" . org-roam-dailies-goto-today)
-           ("C-c n a" . org-roam-tag-add)
-           ;; Dailies
-           ("C-c n j" . org-roam-dailies-capture-today))
-    :config
-    (org-roam-setup))
-  (define-key org-mode-map (kbd "C-c C-w") 'org-refile)
+(use-package org-roam
+  :ensure t
+  :after org
+  :init
+  (setq org-roam-v2-ack t)
+  (setq org-roam-directory (file-truename "~/org/notes/"))
+  (setq org-roam-db-location (concat org-roam-directory "org-roam.db"))
+  :custom
+  (org-roam-directory (file-truename "~/org/notes/"))
+  (org-roam-db-location (concat org-roam-directory "org-roam.db"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ("C-c n t" . org-roam-dailies-goto-today)
+         ("C-c n a" . org-roam-tag-add)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-setup))
+(define-key org-mode-map (kbd "C-c C-w") 'org-refile)
