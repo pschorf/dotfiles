@@ -632,7 +632,9 @@ before packages are loaded."
         (org-agenda-change-all-lines newhead hdmarker))))
 
 
-  (setq org-agenda-files `("~/todo.org" ,pschorf/org-agenda-directory))
+  (setq org-agenda-files `("~/todo.org"
+                           "~/org/meeting_notes.org"
+                           ,pschorf/org-agenda-directory))
   (setq org-refile-targets `((,(concat pschorf/org-agenda-directory "next.org") :level . 1)
                              (,(concat pschorf/org-agenda-directory "projects.org") :maxlevel . 2)
                              ))
@@ -686,9 +688,16 @@ before packages are loaded."
     (org-agenda nil " "))
   (bind-key "<f1>" 'pschorf/switch-to-agenda)
 
+  (bind-key (kbd "s-1") 'winum-select-window-1)
+  (bind-key (kbd "s-2") 'winum-select-window-2)
+  (bind-key (kbd "s-3") 'winum-select-window-3)
+  (bind-key (kbd "s-4") 'winum-select-window-4)
+
   (spacemacs/toggle-mode-line-org-clock-on)
 
   (setq jiralib-url "https://robinhood.atlassian.net")
+
+  (bind-key (kbd "C-x g") 'magit-status)
 
   (defun pschorf/open-jira-ticket-from ()
     (interactive)
