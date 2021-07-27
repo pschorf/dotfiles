@@ -32,43 +32,25 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(ansible
+   '(
      systemd
-     yaml
      haskell
-     finance
-     (python :variables
-             python-backend 'lsp
-             python-lsp-server 'pyright
-             python-pipenv-activate t
-             python-test-runner 'pytest)
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     auto-completion
-     themes-megapack
      ;; better-defaults
      emacs-lisp
-     helm
-     lsp
      ;; markdown
      multiple-cursors
-     (org :variables
-          org-directory "~/org"
-          org-enable-roam-support t
-          org-roam-directory "~/org/notes"
-          org-roam-index-file "~/org/notes/index.org")
-     git
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
      ;; spell-checking
      ;; syntax-checking
      ;; version-control
-     treemacs
-     elfeed)
+     treemacs)
 
    ;; List of additional packages that will be installed without being wrapped
    ;; in a layer (generally the packages are installed only and should still be
@@ -79,11 +61,9 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(gnu-apl-mode
-                                      keychain-environment
                                       key-chord
                                       jump-char
-                                      pdf-tools
-                                      literate-calc-mode)
+                                      pdf-tools)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -566,267 +546,9 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (require 'org)
-  (require 'org-protocol)
-  (require 'org-agenda)
-  (server-start)
-  (setq pschorf/org-agenda-directory "~/org/gtd/")
-  (setq pschorf/org-agenda-todo-view
-        `(" " "Agenda"
-          ((agenda ""
-                   ((org-agenda-span 'day)
-                    (org-deadline-warning-days 365)))
-           (todo "TODO"
-                 ((org-agenda-overriding-header "To Refile")
-                  (org-agenda-files '(,(concat pschorf/org-agenda-directory "inbox.org")))))
-           (todo "NEXT"
-                 ((org-agenda-overriding-header "In Progress")
-                  (org-agenda-files '(,(concat pschorf/org-agenda-directory "someday.org")
-                                      ,(concat pschorf/org-agenda-directory "projects.org")
-                                      ,(concat pschorf/org-agenda-directory "next.org")))
-                  ))
-           (todo "TODO|WAITING"
-                 ((org-agenda-overriding-header "Projects")
-                  (org-agenda-files '(,(concat pschorf/org-agenda-directory "projects.org")))
-                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))
-                  ))
-           (todo "TODO"
-                 ((org-agenda-overriding-header "One-off Tasks")
-                  (org-agenda-files '(,(concat pschorf/org-agenda-directory "next.org")))
-                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-           (todo "TODO"
-                 ((org-agenda-overriding-header "Roam")
-                  (org-agenda-files '(,org-roam-directory))))
-           nil)
-          ((org-agenda-start-with-log-mode t))))
-  (setq pschorf/org-weekly-review
-        '("W" "Weekly Review"
-          agenda ""
-          ((org-agenda-start-day "-7d")
-           (org-agenda-span 7)
-           (org-agenda-start-on-weekday 1)
-           (org-agenda-start-with-log-mode t)
-           (org-agenda-archives-mode t))))
-  (add-to-list 'org-agenda-custom-commands `,pschorf/org-agenda-todo-view)
-  (add-to-list 'org-agenda-custom-commands pschorf/org-weekly-review)
-
-  (setq org-columns-default-format "%40ITEM(Task) %Effort(EE){:} %CLOCKSUM(Time Spent) %SCHEDULED(Scheduled) %DEADLINE(Deadline)")
-  (defvar pschorf/org-current-effort "1:00"
-    "Current effort for agenda items.")
-
-  (defun pschorf/my-org-agenda-set-effort (effort)
-    "Set the effort property for the current headline."
-    (interactive
-     (list (read-string (format "Effort [%s]: " pschorf/org-current-effort) nil nil pschorf/org-current-effort)))
-    (setq pschorf/org-current-effort effort)
-    (org-agenda-check-no-diary)
-    (let* ((hdmarker (or (org-get-at-bol 'org-hd-marker)
-                         (org-agenda-error)))
-           (buffer (marker-buffer hdmarker))
-           (pos (marker-position hdmarker))
-           (inhibit-read-only t)
-           newhead)
-      (org-with-remote-undo buffer
-        (with-current-buffer buffer
-          (widen)
-          (goto-char pos)
-          (org-show-context 'agenda)
-          (funcall-interactively 'org-set-effort nil pschorf/org-current-effort)
-          (end-of-line 1)
-          (setq newhead (org-get-heading)))
-        (org-agenda-change-all-lines newhead hdmarker))))
 
 
-  (setq org-agenda-files `("~/todo.org"
-                           "~/org/meeting_notes.org"
-                           ,pschorf/org-agenda-directory))
-  (setq org-refile-targets `((,(concat pschorf/org-agenda-directory "next.org") :level . 1)
-                             (,(concat pschorf/org-agenda-directory "projects.org") :maxlevel . 2)
-                             ))
 
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d@/!)")
-          (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
-  (setq org-tag-alist (quote (("@errand" . ?e)
-                              ("@work" . ?w)
-                              ("@home" . ?h)
-                              ("@cali" . ?c)
-                              ("@support" . ?s)
-                              ("@jira" . ?j)
-                              (:newline)
-                              ("WAITING" . ?W)
-                              ("HOLD" . ?H)
-                              ("CANCELLED" . ?C))))
-
-  (defun pschorf/process-inbox-item ()
-    "Process an inbox item"
-    (interactive)
-    (org-with-wide-buffer
-     (org-agenda-set-tags)
-     (org-agenda-priority)
-     (call-interactively 'pschorf/my-org-agenda-set-effort)
-                                        ;       (org-agenda-deadline nil)
-     (org-agenda-refile nil nil t)))
-  (defun pschorf/start-task ()
-    "Start working on a task"
-    (interactive)
-    (org-agenda-todo "NEXT")
-    (org-agenda-clock-in))
-
-  (define-key org-agenda-mode-map "i" 'org-agenda-clock-in)
-  (define-key org-agenda-mode-map "r" 'pschorf/process-inbox-item)
-  (define-key org-agenda-mode-map "S" 'pschorf/start-task)
-
-  (setq org-capture-templates
-        `(("i" "inbox" entry (file ,(concat pschorf/org-agenda-directory "inbox.org"))
-           "* TODO %?")
-          ("l" "link" entry (file ,(concat pschorf/org-agenda-directory "link.org"))
-           "* TODO %(org-cliplink-capture)" :immediate-finish t)
-          ("c" "org-protocol-capture" entry (file ,(concat pschorf/org-agenda-directory "inbox.org"))
-           "* TODO [[%:link][%:description]]\n\n" :immediate-finish t)
-          ("t" "Todo" entry (file+headline "~/todo.org" "Tasks")
-           "* TODO %?\n SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n %a")
-          ("m" "Meeting Notes" entry (file+olp+datetree ,(concat org-directory "/meeting_notes.org"))
-           "* %?")))
-  (defun pschorf/switch-to-agenda ()
-    (interactive)
-    (org-agenda nil " "))
-  (bind-key "<f1>" 'pschorf/switch-to-agenda)
-
-  (bind-key (kbd "s-1") 'winum-select-window-1)
-  (bind-key (kbd "s-2") 'winum-select-window-2)
-  (bind-key (kbd "s-3") 'winum-select-window-3)
-  (bind-key (kbd "s-4") 'winum-select-window-4)
-
-  (spacemacs/toggle-mode-line-org-clock-on)
-
-  (setq jiralib-url "https://robinhood.atlassian.net")
-
-  (bind-key (kbd "C-x g") 'magit-status)
-
-  (defun pschorf/open-jira-ticket-from ()
-    (interactive)
-    (let ((jira (org-entry-get (point) "JIRA")))
-      (if jira
-          (let ((jira-url (concat jiralib-url "/browse/" jira)))
-            (browse-url-default-macosx-browser jira-url))
-        (message "No JIRA property!"))))
-
-  (defun pschorf/set-org-jira-ticket (id)
-    (interactive "sJIRA:")
-    (let* ((tags (org-get-tags))
-           (tags-with-jira (or (member "@jira" tags)
-                               (cons "@jira" tags))))
-      (org-set-tags tags-with-jira))
-    (org-entry-put (point) "JIRA" id))
-
-  (defun pschorf/create-org-helper (id)
-    (let* ((jira-summary (shell-command-to-string (concat "jira view -t summary " id))))
-      (org-insert-heading-after-current)
-      (save-excursion
-        (insert jira-summary)
-        (org-demote)
-        (org-todo "TODO"))
-      (save-excursion
-        (pschorf/set-org-jira-ticket id))
-      (org-priority)))
-
-  (defun pschorf/org-jira-count (key)
-    (setq jira-count 0)
-    (let ((buffer (current-buffer)))
-      (set-buffer (find-file "~/org/gtd/projects.org"))
-      (setq jira-count (length (org-map-entries t (concat "JIRA=\"" key "\"") 'file-with-archives)))
-      (set-buffer buffer))
-    jira-count)
-
-  (defun pschorf/create-org-jira-entry (id)
-    (interactive "sJIRA:")
-    (with-current-buffer (find-file "~/org/gtd/projects.org")
-      (if (= 0 (pschorf/org-jira-count id))
-        (org-map-entries (lambda () (pschorf/create-org-helper id)) "ITEM=\"JIRAs\"" 'file))))
-
-  (defun pschorf/create-all-open-jiras ()
-    (interactive)
-    (let* ((keys-string (shell-command-to-string "jira ls -t key -q \"assignee = 60b03cdbcbc3aa0068e6b233 AND resolution is EMPTY\""))
-           (keys (split-string keys-string)))
-      (dolist (key keys)
-        (pschorf/create-org-jira-entry key))))
-
-
-  (defvar jira-mode-map (make-sparse-keymap))
-
-  (define-derived-mode jira-mode
-    special-mode "JIRA"
-    "Jira issue details"
-    (use-local-map jira-mode-map)
-    (evil-define-key 'normal jira-mode-map
-      "q" 'kill-buffer-and-window)
-    (evil-define-key 'normal jira-mode-map
-      "t" 'pschorf/jira-transition))
-
-  (defun pschorf/jira-transition ()
-    (interactive)
-    (let* ((transitions-string (shell-command-to-string (concat "jira transitions " issuekey)))
-           (transition-lines (seq-filter (lambda (s) (not (string= s ""))) (split-string transitions-string "\n")))
-           (choices (mapcar (lambda (s)
-                              (let ((pair (split-string s ":")))
-                                (list (string-trim (cadr pair))
-                                      (string-to-number (string-trim (car pair))))))
-                            transition-lines))
-           (choice (completing-read "Transition" choices)))
-      (shell-command (concat "jira transition --noedit \"" choice "\" " issuekey))
-      (pschorf/draw-jira-details-buffer)))
-
-  (defun pschorf/draw-jira-details-buffer ()
-    (let ((buffer-read-only nil)
-          (jira-details (shell-command-to-string (concat "jira view " issuekey))))
-      (erase-buffer)
-      (insert jira-details)))
-
-  (defun pschorf/jira-details ()
-    (interactive)
-    (setq issuekey (org-entry-get (point) "JIRA"))
-      (split-window-below-and-focus)
-      (switch-to-buffer (get-buffer-create "*JIRA Issue Details*"))
-      (make-local-variable 'issuekey)
-      (pschorf/draw-jira-details-buffer)
-      (jira-mode))
-
-  (spacemacs/declare-prefix-for-mode 'org-mode "mmp" "pschorf")
-  (spacemacs/set-leader-keys-for-major-mode 'org-mode "mps" 'pschorf/set-org-jira-ticket)
-  (spacemacs/set-leader-keys-for-major-mode 'org-mode "mpo" 'pschorf/open-jira-ticket-from)
-  (spacemacs/set-leader-keys "aoj" 'pschorf/jira-details)
-  (spacemacs/set-leader-keys "aoJ" 'pschorf/create-all-open-jiras)
-
-  (setq browse-url-browser-function 'browse-url-default-browser)
-
-  (define-key calc-dispatch-map "l" 'literate-calc-minor-mode)
-
-  (setq epa-pinentry-mode 'loopback)
-
-  (setq lsp-enable-file-watchers nil)
-  (use-package org-roam
-    :ensure t
-    :after org
-    :custom
-    (org-roam-directory (file-truename "~/org/notes/"))
-    (org-roam-db-location (concat org-roam-directory "org-roam.db"))
-    :bind (("C-c n l" . org-roam-buffer-toggle)
-           ("C-c n f" . org-roam-node-find)
-           ("C-c n g" . org-roam-graph)
-           ("C-c n i" . org-roam-node-insert)
-           ("C-c n c" . org-roam-capture)
-           ("C-c n t" . org-roam-dailies-goto-today)
-           ("C-c n a" . org-roam-tag-add)
-           ;; Dailies
-           ("C-c n j" . org-roam-dailies-capture-today))
-    :config
-    (org-roam-setup))
-  (define-key org-mode-map (kbd "C-c C-w") 'org-refile)
-  (keychain-refresh-environment)
-  (setq ledger-post-amount-alignment-at :decimal)
-
-  (global-set-key (kbd "M-i") 'imenu)
 
   ;; key chord
   (require 'key-chord)
@@ -834,62 +556,10 @@ before packages are loaded."
   (key-chord-define-global "fg" 'jump-char-forward)
   (key-chord-define-global "fl" 'avy-goto-line)
 
-  (setq elfeed-feeds '("https://www.reddit.com/r/emacs/.rss" "https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" "https://www.reddit.com/r/apachespark/.rss" "https://www.reddit.com/r/haskell/.rss"))
-
-  (setq erc-autojoin-channels-alist
-        '(("libera.chat" "#emacs" "#archlinux" "#python" "#haskell")))
-  (setq erc-track-position-in-mode-line t)
-  (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT"))
-  (global-set-key (kbd "C-c C-SPC") 'erc-track-switch-buffer)
-  (setq erc-prompt-for-password nil)
+  
 
 
-  (when (require 'mu4e nil 'noerror)
-
-    (setq mu4e-maildir (expand-file-name "~/Maildir"))
-    (setq mu4e-contexts
-          `( ,(make-mu4e-context
-               :name "Gmail"
-               :vars '((mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
-                       (mu4e-sent-folder . "/Gmail/[Gmail].Sent Mail")
-                       (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
-                       (mu4e-sent-messages-behavior . 'delete)
-                       (mu4e-maildir-shortcuts . (("/Gmail/INBOX" . ?i)
-                                                   ("/Gmail/[Gmail].Sent Mail" . ?s)
-                                                   ("/Gmail/[Gmail].Trash" . ?t)))
-                       (user-mail-address . "pschorf2@gmail.com")))
-
-              ,(make-mu4e-context
-               :name "Schorfheide"
-               :vars '((mu4e-drafts-folder . "/Schorfheide/Drafts")
-                       (mu4e-sent-folder . "/Schorfheide/Sent")
-                       (mu4e-trash-folder . "/Schorfheide/Trash")
-                       (mu4e-maildir-shortcuts . (("/Schorfheide/INBOX" . ?i)
-                                                   ("/Schorfheide/Sent" . ?s)
-                                                   ("/Schorfheide/Trash" . ?s)))
-                       (user-mail-address . "paul@schorfheide.org")))))
-
-    (setq mu4e-get-mail-command "offlineimap")
-    (require 'smtpmail)
-    (setq user-full-name "Paul Schorfheide")
-
-    (setq message-send-mail-function 'smtpmail-send-it
-          starttls-use-gnutls t
-          smtpmail-starttls-credentials
-          '(("smtp.gmail.com" 587 nil nil))
-          smtpmail-auth-credentials
-          (expand-file-name "~/.authinfo.gpg")
-          smtpmail-default-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-service 587
-          smtpmail-debug-info t)
-    (defun mu4e-maybe-fetch-mail (prefix)
-      (interactive "P")
-      (if prefix
-          (mu4e-update-mail-and-index nil)
-        (mu4e-update-index)))
-    (define-key mu4e-main-mode-map (kbd "U") 'mu4e-maybe-fetch-mail)
-    ))
+))
 
 
 ;; Do not write anything past this comment. This is where Emacs will
