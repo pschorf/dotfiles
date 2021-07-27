@@ -44,6 +44,7 @@
 (load "~/.emacs.d/internet.el")
 (load "~/.emacs.d/source.el")
 (load "~/.emacs.d/programming.el")
+(load "~/.emacs.d/mail.el")
 
 (when (file-exists-p "~/.emacs.d/local.el")
   (load "~/.emacs.d/local.el"))
