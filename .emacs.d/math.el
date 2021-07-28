@@ -9,3 +9,6 @@
   :commands (ledger-mode)
   :config
   (setq ledger-post-amount-alignment-at :decimal))
+
+(use-package pdf-tools
+  :ensure t)

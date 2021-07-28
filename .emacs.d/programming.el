@@ -1,5 +1,14 @@
 (defvar pschorf/python-env nil)
 
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c C-l")
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+	 (haskell-mode . lsp)
+	 (literate-haskell-mode . lsp))
+  :ensure t
+  :commands lsp)
+
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :ensure t)
@@ -17,6 +26,12 @@
 (use-package pyvenv
   :ensure t
   :commands (pyvenv-workon))
+
+(use-package haskell-mode
+  :ensure t)
+
+(use-package lsp-haskell
+  :ensure t)
 
 (use-package yaml-mode
   :ensure t)

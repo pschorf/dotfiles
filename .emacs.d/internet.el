@@ -12,3 +12,5 @@
 (setq erc-prompt-for-password nil)
 
   
+(use-package smudge
+  :ensure t)
