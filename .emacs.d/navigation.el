@@ -20,3 +20,6 @@
   :ensure t
   :config
   (which-key-mode))
+
+(use-package hydra
+  :ensure t)
