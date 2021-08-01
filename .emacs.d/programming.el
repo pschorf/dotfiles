@@ -47,6 +47,10 @@
   :config
   (projectile-mode +1))
 
+(use-package projectile-ripgrep
+  :commands (projectile-ripgrep)
+  :ensure t)
+
 (use-package ob-ipython
   :ensure t
   :config
