@@ -11,6 +11,10 @@
   :config
   (elfeed-protocol-enable))
 
+(use-package elpher
+  :ensure t
+  :commands elpher)
+
 (setq erc-autojoin-channels-alist
       '(("libera.chat" "#emacs" "#archlinux" "#python" "#haskell")))
 (setq erc-track-position-in-mode-line t)
