@@ -9,12 +9,10 @@
 
 (global-set-key (kbd "M-i") 'imenu)
 
-(use-package helm
-  :straight t
-  :bind (("M-x" . 'helm-M-x)
-	 ("C-x C-f" . 'helm-find-files))
+(use-package ivy
+  :ensure t
   :config
-  (helm-mode 1))
+  (ivy-mode))
 
 (use-package which-key
   :ensure t

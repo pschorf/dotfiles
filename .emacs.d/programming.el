@@ -46,3 +46,12 @@
   :bind-keymap  ("C-c p" . projectile-command-map)
   :config
   (projectile-mode +1))
+
+(use-package projectile-ripgrep
+  :commands (projectile-ripgrep)
+  :ensure t)
+
+(use-package ob-ipython
+  :ensure t
+  :config
+  (add-to-list 'org-babel-load-languages '(ipython . t)))
