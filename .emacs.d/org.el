@@ -156,3 +156,6 @@
 
 (use-package ox-gemini
   :ensure t)
+
+(push 'company-capf company-backends)
+(setq org-roam-completion-everywhere t)
