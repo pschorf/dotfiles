@@ -52,4 +52,4 @@ _u_: User Playlists      _r_  : Repeat            _d_: Device
     ("d" smudge-select-device :exit nil)
     ("q" quit-window "quit" :color blue))
 
-(bind-key "C-c . a" #'hydra-spotify/body)
+(bind-key "C-c C-. a" #'hydra-spotify/body)

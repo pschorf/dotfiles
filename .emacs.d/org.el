@@ -6,6 +6,7 @@
 
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c a") 'org-agenda)
 
 
 (setq pschorf/org-agenda-directory "~/org/gtd/")
@@ -92,6 +93,7 @@
 			   ("WAITING" . ?W)
 			   ("HOLD" . ?H)
 			   ("CANCELLED" . ?C))))
+(setq org-tag-persistent-alist org-tag-alist)
 
 (defun pschorf/process-inbox-item ()
  "Process an inbox item"
