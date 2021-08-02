@@ -150,3 +150,7 @@
   :config
   (org-roam-setup))
 (define-key org-mode-map (kbd "C-c C-w") 'org-refile)
+
+
+(use-package ox-gemini
+  :ensure t)
