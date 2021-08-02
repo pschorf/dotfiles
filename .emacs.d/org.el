@@ -33,6 +33,9 @@
 	      ((org-agenda-overriding-header "One-off Tasks")
 	       (org-agenda-files '(,(concat pschorf/org-agenda-directory "next.org")))
 	       (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	(todo "TODO"
+	      ((org-agenda-overriding-header "Roam")
+	       (org-agenda-files '("~/org/notes"))))
 	nil)
        ((org-agenda-start-with-log-mode t))))
 (setq pschorf/org-weekly-review
@@ -157,5 +160,5 @@
 (use-package ox-gemini
   :ensure t)
 
-(push 'company-capf company-backends)
+
 (setq org-roam-completion-everywhere t)
