@@ -16,6 +16,7 @@
               ,(make-mu4e-context
                :name "Schorfheide"
                :vars '((mu4e-drafts-folder . "/Schorfheide/Drafts")
+		       (mu4e-sent-messages-behavior . 'sent)
                        (mu4e-sent-folder . "/Schorfheide/Sent")
                        (mu4e-trash-folder . "/Schorfheide/Trash")
                        (mu4e-maildir-shortcuts . (("/Schorfheide/INBOX" . ?i)
@@ -30,12 +31,12 @@
     (setq message-send-mail-function 'smtpmail-send-it
           starttls-use-gnutls t
           smtpmail-starttls-credentials
-          '(("smtp.gmail.com" 587 nil nil))
+          '(("mail.schorfheide.org" 2525 nil nil))
           smtpmail-auth-credentials
           (expand-file-name "~/.authinfo.gpg")
-          smtpmail-default-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-service 587
+          smtpmail-default-smtp-server "mail.schorfheide.org"
+          smtpmail-smtp-server "mail.schorfheide.org"
+          smtpmail-smtp-service 2525
           smtpmail-debug-info t)
     (defun mu4e-maybe-fetch-mail (prefix)
       (interactive "P")
