@@ -22,14 +22,15 @@
 	      ((org-agenda-overriding-header "In Progress")
 	       (org-agenda-files '(,(concat pschorf/org-agenda-directory "someday.org")
 				   ,(concat pschorf/org-agenda-directory "projects.org")
-				   ,(concat pschorf/org-agenda-directory "next.org")))
+				   ,(concat pschorf/org-agenda-directory "next.org")
+				   "~/org/notes"))
 	       ))
 	(todo "TODO|WAITING"
 	      ((org-agenda-overriding-header "Projects")
 	       (org-agenda-files '(,(concat pschorf/org-agenda-directory "projects.org")))
 	       (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))
 	       ))
-	(todo "TODO"
+	(todo "TODO|WAITING"
 	      ((org-agenda-overriding-header "One-off Tasks")
 	       (org-agenda-files '(,(concat pschorf/org-agenda-directory "next.org")))
 	       (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
@@ -46,8 +47,13 @@
 	(org-agenda-start-on-weekday 1)
 	(org-agenda-start-with-log-mode t)
 	(org-agenda-archives-mode t))))
+(setq pschorf/active-threads
+      '("A" "Active/Blocked Tasks"
+	tags-todo "@Active|@Blocked/!TODO|NEXT"))
+
 (add-to-list 'org-agenda-custom-commands `,pschorf/org-agenda-todo-view)
 (add-to-list 'org-agenda-custom-commands pschorf/org-weekly-review)
+(add-to-list 'org-agenda-custom-commands pschorf/active-threads)
 
 (setq org-columns-default-format "%40ITEM(Task) %Effort(EE){:} %CLOCKSUM(Time Spent) %SCHEDULED(Scheduled) %DEADLINE(Deadline)")
 (defvar pschorf/org-current-effort "1:00"
@@ -77,7 +83,8 @@
 
 
 (setq org-agenda-files `("~/org/meeting_notes.org"
-			,pschorf/org-agenda-directory))
+			 ,pschorf/org-agenda-directory
+			 "~/org/notes"))
 (setq org-refile-targets `((,(concat pschorf/org-agenda-directory "next.org") :level . 1)
 			  (,(concat pschorf/org-agenda-directory "projects.org") :maxlevel . 2)
 			  ))
