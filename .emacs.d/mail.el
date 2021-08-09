@@ -16,7 +16,7 @@
               ,(make-mu4e-context
                :name "Schorfheide"
                :vars '((mu4e-drafts-folder . "/Schorfheide/Drafts")
-		       (mu4e-sent-messages-behavior . 'sent)
+		       (mu4e-sent-messages-behavior .  'sent)
                        (mu4e-sent-folder . "/Schorfheide/Sent")
                        (mu4e-trash-folder . "/Schorfheide/Trash")
                        (mu4e-maildir-shortcuts . (("/Schorfheide/INBOX" . ?i)
@@ -27,6 +27,7 @@
     (setq mu4e-get-mail-command "offlineimap")
     (require 'smtpmail)
     (setq user-full-name "Paul Schorfheide")
+    (setq mu4e-attachment-dir "~/Downloads")
 
     (setq message-send-mail-function 'smtpmail-send-it
           starttls-use-gnutls t
