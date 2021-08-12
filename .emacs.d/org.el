@@ -123,17 +123,7 @@
 (define-key org-agenda-mode-map "r" 'pschorf/process-inbox-item)
 (define-key org-agenda-mode-map "S" 'pschorf/start-task)
 
-(setq org-capture-templates
-     `(("i" "inbox" entry (file ,(concat pschorf/org-agenda-directory "inbox.org"))
-	"* TODO %?")
-       ("l" "link" entry (file ,(concat pschorf/org-agenda-directory "link.org"))
-	"* TODO %(org-cliplink-capture)" :immediate-finish t)
-       ("c" "org-protocol-capture" entry (file ,(concat pschorf/org-agenda-directory "inbox.org"))
-	"* TODO [[%:link][%:description]]\n\n" :immediate-finish t)
-       ("t" "Todo" entry (file+headline "~/todo.org" "Tasks")
-	"* TODO %?\n SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n %a")
-       ("m" "Meeting Notes" entry (file+olp+datetree ,(concat org-directory "/meeting_notes.org"))
-	"* %?")))
+
 (defun pschorf/switch-to-agenda ()
  (interactive)
  (org-agenda nil " "))
@@ -159,7 +149,27 @@
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
-  (org-roam-setup))
+  (org-roam-setup)
+  (add-to-list 'org-roam-capture-templates
+	     '("p" "project" plain "%?"         
+               :if-new (file+head "%<%Y%m%d%H%M%S>-project-${slug}.org"                                                   
+				  "#+title: Project ${title}
+
+Description
+
+- Tags ::  
+  - [[file:projects.org][Projects]]
+
+,* Setup :ignore:
+,* Resources and other Materials :ignore:
+,* Development Process
+,* Tasks Table :ignore:
+
+,#+COLUMNS: \\\\\\%ITEM \\\\\\%TAGS %PRIORITY \\\\\\%TODO(STATUS) \\\\\\%CREATED \\\\\\%CLOCKSUM %SCHEDULED %DEADLINE %STARTED \\\\\\%CLOSED
+,#+BEGIN: columnview :hlines 2 :indent t :id global :exclude-tags (\"ignore\")
+,#+END:
+")
+:unnarrowed t)))
 (define-key org-mode-map (kbd "C-c C-w") 'org-refile)
 
 
@@ -168,3 +178,28 @@
 
 
 (setq org-roam-completion-everywhere t)
+
+
+(defun org-babel-execute:presto (body params)
+  "Execute a presto query"
+  (let ((in-file (org-babel-temp-file "p" ".presto")))
+    (with-temp-file in-file
+      (insert body))
+    (org-babel-eval
+     (format "~/scripts/presto-query %s"
+	     (org-babel-process-file-name in-file))
+     "")))
+
+     
+
+(setq org-capture-templates
+     `(("i" "inbox" entry (file ,(concat pschorf/org-agenda-directory "inbox.org"))
+	"* TODO %?")
+       ("l" "link" entry (file ,(concat pschorf/org-agenda-directory "link.org"))
+	"* TODO %(org-cliplink-capture)" :immediate-finish t)
+       ("c" "org-protocol-capture" entry (file ,(concat pschorf/org-agenda-directory "inbox.org"))
+	"* TODO [[%:link][%:description]]\n\n" :immediate-finish t)
+       ("t" "Todo" entry (file+headline "~/todo.org" "Tasks")
+	"* TODO %?\n SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n %a")
+       ("m" "Meeting Notes" entry (file+olp+datetree ,(concat org-directory "/meeting_notes.org"))
+	"* %?")))
