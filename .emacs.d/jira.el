@@ -1,4 +1,5 @@
 (setq jiralib-url "https://robinhood.atlassian.net")
+(setq jira-binary "/usr/local/bin/jira")
 
 
   (defun pschorf/open-jira-ticket-from ()
@@ -18,7 +19,7 @@
     (org-entry-put (point) "JIRA" id))
 
   (defun pschorf/create-org-helper (id)
-    (let* ((jira-summary (shell-command-to-string (concat "jira view -t summary " id))))
+    (let* ((jira-summary (shell-command-to-string (concat jira-binary " view -t summary " id))))
       (org-insert-heading-after-current)
       (save-excursion
         (insert jira-summary)
@@ -44,7 +45,7 @@
 
   (defun pschorf/create-all-open-jiras ()
     (interactive)
-    (let* ((keys-string (shell-command-to-string "jira ls -t key -q \"assignee = 60b03cdbcbc3aa0068e6b233 AND resolution is EMPTY\""))
+    (let* ((keys-string (shell-command-to-string (concat jira-binary " ls -t key -q \"assignee = 60b03cdbcbc3aa0068e6b233 AND resolution is EMPTY\"")))
            (keys (split-string keys-string)))
       (dolist (key keys)
         (pschorf/create-org-jira-entry key))))
@@ -56,14 +57,12 @@
     special-mode "JIRA"
     "Jira issue details"
     (use-local-map jira-mode-map)
-    (evil-define-key 'normal jira-mode-map
-      "q" 'kill-buffer-and-window)
-    (evil-define-key 'normal jira-mode-map
-      "t" 'pschorf/jira-transition))
+    (bind-key (kbd "q") 'kill-buffer-and-window jira-mode-map)
+    (bind-key (kbd "t") 'pschorf/jira-transition jira-mode-map))
 
   (defun pschorf/jira-transition ()
     (interactive)
-    (let* ((transitions-string (shell-command-to-string (concat "jira transitions " issuekey)))
+    (let* ((transitions-string (shell-command-to-string (concat jira-binary " transitions " issuekey)))
            (transition-lines (seq-filter (lambda (s) (not (string= s ""))) (split-string transitions-string "\n")))
            (choices (mapcar (lambda (s)
                               (let ((pair (split-string s ":")))
@@ -71,20 +70,21 @@
                                       (string-to-number (string-trim (car pair))))))
                             transition-lines))
            (choice (completing-read "Transition" choices)))
-      (shell-command (concat "jira transition --noedit \"" choice "\" " issuekey))
+      (shell-command (concat jira-binary " transition --noedit \"" choice "\" " issuekey))
       (pschorf/draw-jira-details-buffer)))
 
   (defun pschorf/draw-jira-details-buffer ()
     (let ((buffer-read-only nil)
-          (jira-details (shell-command-to-string (concat "jira view " issuekey))))
+          (jira-details (shell-command-to-string (concat jira-binary " view " issuekey))))
       (erase-buffer)
       (insert jira-details)))
 
   (defun pschorf/jira-details ()
     (interactive)
     (setq issuekey (org-entry-get (point) "JIRA"))
-      (split-window-below-and-focus)
-      (switch-to-buffer (get-buffer-create "*JIRA Issue Details*"))
-      (make-local-variable 'issuekey)
-      (pschorf/draw-jira-details-buffer)
-      (jira-mode))
+    (split-window-below)
+    (select-window (window-in-direction 'below))
+    (switch-to-buffer (get-buffer-create "*JIRA Issue Details*"))
+    (make-local-variable 'issuekey)
+    (pschorf/draw-jira-details-buffer)
+    (jira-mode))
