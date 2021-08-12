@@ -2,6 +2,8 @@
   :ensure t
   :init
   (setq elfeed-feeds '(("ttrss+https://paul@rss.schorfheide.org/tt-rss" :use-authinfo t)))
+  :bind (:map elfeed-search-mode-map
+	      ("U" . elfeed-update))
   :commands elfeed)
 
 (use-package elfeed-protocol
@@ -16,7 +18,7 @@
   :commands elpher)
 
 (setq erc-autojoin-channels-alist
-      '(("libera.chat" "#emacs" "#archlinux" "#python" "#haskell")))
+      '(("libera.chat" "#emacs" "#archlinux" "#python" "#haskell" "##rust")))
 (setq erc-track-position-in-mode-line t)
 (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT"))
 (setq erc-prompt-for-password nil)

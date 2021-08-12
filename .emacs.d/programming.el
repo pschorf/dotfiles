@@ -55,3 +55,8 @@
   :ensure t
   :config
   (add-to-list 'org-babel-load-languages '(ipython . t)))
+
+(use-package rust-mode
+  :ensure t
+  :config
+  (setq lsp-rust-server 'rls))
