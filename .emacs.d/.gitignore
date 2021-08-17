@@ -8,3 +8,9 @@ elpa
 local.el
 bookmarks
 projectile-bookmarks.eld
+/.emacs.d/.cache/
+/.emacs.d/.org-id-locations
+/.emacs.d/eshell/
+/.emacs.d/request/
+/.emacs.d/tramp
+/.emacs.d/url/
