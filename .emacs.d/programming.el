@@ -60,3 +60,6 @@
   :ensure t
   :config
   (setq lsp-rust-server 'rls))
+
+(use-package vterm
+  :ensure t)
