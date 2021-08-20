@@ -30,7 +30,9 @@
 			 (require 'lsp-pyright)
 			 (lsp)))
   :config
-  (setq lsp-enable-file-watchers nil))
+  (setq lsp-enable-file-watchers nil)
+  (add-to-list 'lsp-disabled-clients 'pylsp)
+  (add-to-list 'exec-path "/usr/local/bin"))
 
 (use-package pyvenv
   :ensure t

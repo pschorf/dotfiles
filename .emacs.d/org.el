@@ -36,8 +36,12 @@
 	       (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
 	(todo "TODO"
 	      ((org-agenda-overriding-header "Roam")
-	       (org-agenda-files '("~/org/notes"))))
-	nil)
+	       (org-agenda-files '("~/org/notes"))
+	       (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+	(todo "CODE REVIEW"
+	      ((org-agenda-overriding-header "Code Reviews")
+	       (org-agenda-files '("~/org/notes" "~/org/gtd"))))
+	nil) 
        ((org-agenda-start-with-log-mode t))))
 (setq pschorf/org-weekly-review
      '("W" "Weekly Review"
@@ -91,7 +95,7 @@
 
 (setq org-todo-keywords
      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d@/!)")
-       (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+       (sequence "WAITING(w@/!)" "CODE REVIEW(r@/!)" "|" "CANCELLED(c@/!)")))
 (setq org-tag-alist (quote (("@errand" . ?e)
 			   ("@work" . ?w)
 			   ("@home" . ?h)
@@ -146,6 +150,7 @@
          ("C-c n c" . org-roam-capture)
          ("C-c n t" . org-roam-dailies-goto-today)
          ("C-c n a" . org-roam-tag-add)
+	 ("C-c n r" . org-roam-ref-add)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
