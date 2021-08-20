@@ -96,3 +96,8 @@
 
 (electric-pair-mode 1)
 
+(defun pschorf/set-query-token (query-token)
+  (interactive "sQuery Token: ")
+  (setenv "QUERY_TOKEN" query-token))
+
+(define-key org-mode-map (kbd "C-c q") 'pschorf/set-query-token)
