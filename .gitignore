@@ -2,3 +2,11 @@
 .vim/plugin/eclim.vim
 .vim/.netrwhist
 .vim/.VimballRecord
+/.emacs.d/.cache/
+/.emacs.d/.dap-breakpoints
+/.emacs.d/.org-id-locations
+/.emacs.d/abbrev_defs
+/.emacs.d/eshell/
+/.emacs.d/request/
+/.emacs.d/tramp
+/.emacs.d/url/
