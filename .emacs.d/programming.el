@@ -1,3 +1,10 @@
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq lsp-completion-provider :capf)
+  (push 'company-capf company-backends))
+
 (defvar pschorf/python-env nil)
 
 (use-package lsp-mode
