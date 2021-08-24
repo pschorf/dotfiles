@@ -101,3 +101,5 @@
   (setenv "QUERY_TOKEN" query-token))
 
 (define-key org-mode-map (kbd "C-c q") 'pschorf/set-query-token)
+
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
