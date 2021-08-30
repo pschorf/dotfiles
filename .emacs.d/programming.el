@@ -17,7 +17,8 @@
 	 (haskell-mode . lsp)
 	 (literate-haskell-mode . lsp)
 	 (scala-mode . lsp)
-	 (lsp-mode . lsp-lens-mode))
+	 (lsp-mode . lsp-lens-mode)
+	 (c-mode . lsp))
   :ensure t
   :commands lsp
   :config

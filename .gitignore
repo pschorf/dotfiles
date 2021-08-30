@@ -10,3 +10,5 @@
 /.emacs.d/request/
 /.emacs.d/tramp
 /.emacs.d/url/
+/.emacs.d/network-security.data
+/.emacs.d/quelpa/
