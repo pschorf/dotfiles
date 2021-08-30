@@ -1,3 +1,10 @@
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq lsp-completion-provider :capf)
+  (push 'company-capf company-backends))
+
 (defvar pschorf/python-env nil)
 
 (use-package lsp-mode
@@ -31,7 +38,9 @@
 			 (require 'lsp-pyright)
 			 (lsp)))
   :config
-  (setq lsp-enable-file-watchers nil))
+  (setq lsp-enable-file-watchers nil)
+  (add-to-list 'lsp-disabled-clients 'pylsp)
+  (add-to-list 'exec-path "/usr/local/bin"))
 
 (use-package pyvenv
   :ensure t
@@ -95,3 +104,10 @@
 
 (electric-pair-mode 1)
 
+(defun pschorf/set-query-token (query-token)
+  (interactive "sQuery Token: ")
+  (setenv "QUERY_TOKEN" query-token))
+
+(define-key org-mode-map (kbd "C-c q") 'pschorf/set-query-token)
+
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)

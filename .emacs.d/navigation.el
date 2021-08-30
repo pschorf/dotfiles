@@ -21,3 +21,5 @@
 
 (use-package hydra
   :ensure t)
+
+(setq-default abbrev-mode t)
