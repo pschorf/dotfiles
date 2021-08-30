@@ -42,7 +42,6 @@
 (load "~/.emacs.d/navigation.el")
 (load "~/.emacs.d/math.el")
 (load "~/.emacs.d/internet.el")
-(load "~/.emacs.d/source.el")
 (load "~/.emacs.d/programming.el")
 (load "~/.emacs.d/mail.el")
 (load "~/.emacs.d/jira.el")

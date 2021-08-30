@@ -7,6 +7,9 @@
 
 (defvar pschorf/python-env nil)
 
+(use-package flycheck
+  :ensure t)
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c C-l")
@@ -88,7 +91,8 @@
   :ensure t
   :config
   (setq lsp-ui-sideline-show-diagnostics t)
-  (setq lsp-ui-sideline-show-code-actions t))
+  (setq lsp-ui-sideline-show-code-actions t)
+  (setq lsp-ui-sideline-show-hover t))
 (use-package yasnippet
   :ensure t)
 (use-package posframe

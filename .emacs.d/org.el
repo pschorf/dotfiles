@@ -121,7 +121,12 @@
  "Start working on a task"
  (interactive)
  (org-agenda-todo "NEXT")
- (org-agenda-clock-in))
+ (org-agenda-clock-in)
+ (save-excursion
+   (org-agenda-switch-to)
+   (let ((started (org-entry-get (point) "STARTED")))
+     (unless started
+       (org-entry-put (point) "STARTED" (current-time-string))))))
 
 (define-key org-agenda-mode-map "i" 'org-agenda-clock-in)
 (define-key org-agenda-mode-map "r" 'pschorf/process-inbox-item)
@@ -208,3 +213,7 @@ Description
 	"* TODO %?\n SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n %a")
        ("m" "Meeting Notes" entry (file+olp+datetree ,(concat org-directory "/meeting_notes.org"))
 	"* %?")))
+
+(setq org-log-done 'time)
+
+(add-hook 'org-mode-hook #'auto-fill-mode)
