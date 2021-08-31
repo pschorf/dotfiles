@@ -54,10 +54,14 @@
 (setq pschorf/active-threads
       '("A" "Active/Blocked Tasks"
 	tags-todo "@Active|@Blocked/!TODO|NEXT"))
+(setq pschorf/goals-for-week
+      '("G" "Goals for the week"
+	tags-todo "@gftw/!TODO|NEXT"))
 
 (add-to-list 'org-agenda-custom-commands `,pschorf/org-agenda-todo-view)
 (add-to-list 'org-agenda-custom-commands pschorf/org-weekly-review)
 (add-to-list 'org-agenda-custom-commands pschorf/active-threads)
+(add-to-list 'org-agenda-custom-commands pschorf/goals-for-week)
 
 (setq org-columns-default-format "%40ITEM(Task) %Effort(EE){:} %CLOCKSUM(Time Spent) %SCHEDULED(Scheduled) %DEADLINE(Deadline)")
 (defvar pschorf/org-current-effort "1:00"
@@ -88,7 +92,8 @@
 
 (setq org-agenda-files `("~/org/meeting_notes.org"
 			 ,pschorf/org-agenda-directory
-			 "~/org/notes"))
+			 "~/org/notes"
+			 "~/org/notes/daily"))
 (setq org-refile-targets `((,(concat pschorf/org-agenda-directory "next.org") :level . 1)
 			  (,(concat pschorf/org-agenda-directory "projects.org") :maxlevel . 2)
 			  ))
@@ -102,6 +107,7 @@
 			   ("@cali" . ?c)
 			   ("@support" . ?s)
 			   ("@jira" . ?j)
+			   ("@gftw" . ?g)
 			   (:newline)
 			   ("WAITING" . ?W)
 			   ("HOLD" . ?H)
@@ -121,12 +127,7 @@
  "Start working on a task"
  (interactive)
  (org-agenda-todo "NEXT")
- (org-agenda-clock-in)
- (save-excursion
-   (org-agenda-switch-to)
-   (let ((started (org-entry-get (point) "STARTED")))
-     (unless started
-       (org-entry-put (point) "STARTED" (current-time-string))))))
+ (org-agenda-clock-in))
 
 (define-key org-agenda-mode-map "i" 'org-agenda-clock-in)
 (define-key org-agenda-mode-map "r" 'pschorf/process-inbox-item)
