@@ -16,6 +16,7 @@
                :name "Schorfheide"
                :vars '((mu4e-drafts-folder . "/Schorfheide/Drafts")
                        (mu4e-sent-folder . "/Schorfheide/Sent")
+		       (mu4e-trash-folder . "/Schorfheide/Trash")
                        (mu4e-maildir-shortcuts . (("/Schorfheide/INBOX" . ?i)
                                                    ("/Schorfheide/Sent" . ?s)
                                                    ("/Schorfheide/Trash" . ?s)))

@@ -215,5 +215,3 @@ Description
 	"* %?")))
 
 (setq org-log-done 'time)
-
-(add-hook 'org-mode-hook #'auto-fill-mode)

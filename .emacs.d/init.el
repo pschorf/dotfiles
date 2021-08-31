@@ -36,6 +36,12 @@
 
 ; basic config not in other files
 (setq epa-pinentry-mode 'loopback)
+(setq backup-directory-alist
+      `((".*" . "~/.emacs.d/backups")))
+(add-to-list 'backup-directory-alist
+	     (cons tramp-file-name-regexp nil))
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs.d/backups" t)))
 
 ; load remaining config files
 (load "~/.emacs.d/org.el")
