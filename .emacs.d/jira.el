@@ -88,3 +88,12 @@
     (make-local-variable 'issuekey)
     (pschorf/draw-jira-details-buffer)
     (jira-mode))
+
+(define-key org-mode-map (kbd "C-c C-w") 'org-refile)
+
+(defvar org-jira-map (make-sparse-keymap))
+(bind-key (kbd "o") 'pschorf/open-jira-ticket-from org-jira-map)
+(bind-key (kbd "C") 'pschorf/create-all-open-jiras org-jira-map)
+(bind-key (kbd "j") 'pschorf/jira-details org-jira-map)
+
+(define-key org-mode-map (kbd "C-c j") org-jira-map)
