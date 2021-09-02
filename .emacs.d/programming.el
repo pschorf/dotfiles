@@ -12,13 +12,15 @@
 
 (use-package lsp-mode
   :init
-  (setq lsp-keymap-prefix "C-c C-l")
+  (setq lsp-keymap-prefix "s-l")
   :hook ((lsp-mode . lsp-enable-which-key-integration)
 	 (haskell-mode . lsp)
 	 (literate-haskell-mode . lsp)
 	 (scala-mode . lsp)
 	 (lsp-mode . lsp-lens-mode)
 	 (c-mode . lsp))
+  :bind (:map lsp-mode-map
+	      ("s-/" . lsp-ivy-workspace-symbol))
   :ensure t
   :commands lsp
   :config
@@ -28,6 +30,9 @@
   (setq lsp-log-io nil)
   (setq lsp-completion-provider :capf)
   (setq lsp-prefer-flymake nil))
+
+(use-package lsp-ivy
+  :ensure t)
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
