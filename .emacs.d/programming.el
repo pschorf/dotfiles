@@ -5,6 +5,9 @@
   (setq lsp-completion-provider :capf)
   (push 'company-capf company-backends))
 
+(use-package magit
+  :ensure t)
+
 (defvar pschorf/python-env nil)
 
 (use-package flycheck
@@ -47,9 +50,9 @@
 			 (lsp)))
   :config
   (setq lsp-enable-file-watchers nil)
-  (add-to-list 'lsp-disabled-clients 'pylsp)
-  (add-to-list 'exec-path "/usr/local/bin"))
+  (add-to-list 'lsp-disabled-clients 'pylsp))
 
+(add-to-list 'exec-path "/usr/local/bin")
 (use-package pyvenv
   :ensure t
   :commands (pyvenv-workon))

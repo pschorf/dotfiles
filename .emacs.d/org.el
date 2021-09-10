@@ -43,6 +43,7 @@
 	       (org-agenda-files '("~/org/notes" "~/org/gtd"))))
 	nil) 
        ((org-agenda-start-with-log-mode t))))
+
 (setq pschorf/org-weekly-review
      '("W" "Weekly Review"
        agenda ""
@@ -62,6 +63,7 @@
 (add-to-list 'org-agenda-custom-commands pschorf/org-weekly-review)
 (add-to-list 'org-agenda-custom-commands pschorf/active-threads)
 (add-to-list 'org-agenda-custom-commands pschorf/goals-for-week)
+
 
 (setq org-columns-default-format "%40ITEM(Task) %Effort(EE){:} %CLOCKSUM(Time Spent) %SCHEDULED(Scheduled) %DEADLINE(Deadline)")
 (defvar pschorf/org-current-effort "1:00"
