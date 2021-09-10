@@ -18,7 +18,8 @@
   :commands elpher)
 
 (setq erc-autojoin-channels-alist
-      '(("libera.chat" "#emacs" "#archlinux" "#python" "#haskell" "##rust")))
+      '(("libera.chat" "#emacs" "#archlinux" "#python" "#haskell" "##rust")
+	("irc.oftc.net" "#kernelnewbies")))
 (setq erc-track-position-in-mode-line t)
 (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT"))
 (setq erc-prompt-for-password nil)
